@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>07.02 - Animation with morphing (manually)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+    <script src="OrbitControls.js"></script>
+    <script type="x-shader/x-vertex" id="vertexShader">
+
+        /////////////////////////////////////////////////////////// Ashima's noise3D
+
+        vec3 mod289(vec3 x)
+        {
+          return x - floor(x * (1.0 / 289.0)) * 289.0;
+        }
+
+        vec4 mod289(vec4 x)
+        {
+          return x - floor(x * (1.0 / 289.0)) * 289.0;
+        }
+
+        vec4 permute(vec4 x)
+        {
+          return mod289(((x*34.0)+1.0)*x);
+        }
+
+        vec4 taylorInvSqrt(vec4 r)
+        {
+          return 1.79284291400159 - 0.85373472095314 * r;
+        }
+
+        vec3 fade(vec3 t) {
+          return t*t*t*(t*(t*6.0-15.0)+10.0);
+        }
+
+        // Classic Perlin noise
+        float cnoise(vec3 P)
+        {
+          vec3 Pi0 = floor(P); // Integer part for indexing
+          vec3 Pi1 = Pi0 + vec3(1.0); // Integer part + 1
+          Pi0 = mod289(Pi0);
+          Pi1 = mod289(Pi1);
+          vec3 Pf0 = fract(P); // Fractional part for interpolation
+          vec3 Pf1 = Pf0 - vec3(1.0); // Fractional part - 1.0
+          vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+          vec4 iy = vec4(Pi0.yy, Pi1.yy);
+          vec4 iz0 = Pi0.zzzz;
+          vec4 iz1 = Pi1.zzzz;
+
+          vec4 ixy = permute(permute(ix) + iy);
+          vec4 ixy0 = permute(ixy + iz0);
+          vec4 ixy1 = permute(ixy + iz1);
+
+          vec4 gx0 = ixy0 * (1.0 / 7.0);
+          vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
+          gx0 = fract(gx0);
+          vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+          vec4 sz0 = step(gz0, vec4(0.0));
+          gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+          gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+
+          vec4 gx1 = ixy1 * (1.0 / 7.0);
+          vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
+          gx1 = fract(gx1);
+          vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+          vec4 sz1 = step(gz1, vec4(0.0));
+          gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+          gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+
+          vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+          vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+          vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+          vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+          vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+          vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+          vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+          vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+
+          vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+          g000 *= norm0.x;
+          g010 *= norm0.y;
+          g100 *= norm0.z;
+          g110 *= norm0.w;
+          vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+          g001 *= norm1.x;
+          g011 *= norm1.y;
+          g101 *= norm1.z;
+          g111 *= norm1.w;
+
+          float n000 = dot(g000, Pf0);
+          float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+          float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+          float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+          float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+          float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+          float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+          float n111 = dot(g111, Pf1);
+
+          vec3 fade_xyz = fade(Pf0);
+          vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+          vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+          float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+          return 2.2 * n_xyz;
+        }
+
+        // Classic Perlin noise, periodic variant
+        float pnoise(vec3 P, vec3 rep)
+        {
+          vec3 Pi0 = mod(floor(P), rep); // Integer part, modulo period
+          vec3 Pi1 = mod(Pi0 + vec3(1.0), rep); // Integer part + 1, mod period
+          Pi0 = mod289(Pi0);
+          Pi1 = mod289(Pi1);
+          vec3 Pf0 = fract(P); // Fractional part for interpolation
+          vec3 Pf1 = Pf0 - vec3(1.0); // Fractional part - 1.0
+          vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+          vec4 iy = vec4(Pi0.yy, Pi1.yy);
+          vec4 iz0 = Pi0.zzzz;
+          vec4 iz1 = Pi1.zzzz;
+
+          vec4 ixy = permute(permute(ix) + iy);
+          vec4 ixy0 = permute(ixy + iz0);
+          vec4 ixy1 = permute(ixy + iz1);
+
+          vec4 gx0 = ixy0 * (1.0 / 7.0);
+          vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
+          gx0 = fract(gx0);
+          vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+          vec4 sz0 = step(gz0, vec4(0.0));
+          gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+          gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+
+          vec4 gx1 = ixy1 * (1.0 / 7.0);
+          vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
+          gx1 = fract(gx1);
+          vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+          vec4 sz1 = step(gz1, vec4(0.0));
+          gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+          gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+
+          vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+          vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+          vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+          vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+          vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+          vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+          vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+          vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+
+          vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+          g000 *= norm0.x;
+          g010 *= norm0.y;
+          g100 *= norm0.z;
+          g110 *= norm0.w;
+          vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+          g001 *= norm1.x;
+          g011 *= norm1.y;
+          g101 *= norm1.z;
+          g111 *= norm1.w;
+
+          float n000 = dot(g000, Pf0);
+          float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+          float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+          float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+          float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+          float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+          float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+          float n111 = dot(g111, Pf1);
+
+          vec3 fade_xyz = fade(Pf0);
+          vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+          vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+          float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+          return 2.2 * n_xyz;
+        }
+
+
+
+        /////////////////////////////////////////////////////////// Shader
+
+
+        varying vec3 vNormal;
+
+        uniform vec3 mouse;
+
+        uniform float time;
+
+        varying float displacement;
+
+        float rand(vec2 co){
+            return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+        }
+
+        void main() {
+
+            float upper = 500.0;
+            float multiplicator = 5.0;
+
+            // float upper = 1500.0;
+            // float multiplicator = 3.0;
+
+            vNormal = normal;
+
+            float distance = distance(mouse, position);
+            if
+             (distance > ( upper / multiplicator ) ) {
+                displacement = 20.0 * pnoise( 0.05 * position + 0.005 * time, vec3( 1.0 ) ) ;
+            }
+            else {
+                displacement = ( -( distance * multiplicator ) + upper ) * pnoise( 0.05 * position + 0.01 * time, vec3( 100.0 ) ) ;
+                // displacement = ( ( distance * 0.5 ) ) * pnoise( 0.05 * position + 0.01 * time, vec3( 100.0 ) ) ;
+                // displacement = bosse * noise
+            }              
+
+            // displacement = ( -( distance ) + upper ) * pnoise( 0.05 * position, vec3( 1.0 ) ) ;
+            // displacement = ( -( distance )  ) ;
+
+            if (displacement <= 0.0) {
+                displacement = 0.0;
+            }
+
+            vec3 newPosition = position + normal * vec3(displacement);
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+
+        }
+
+
+    </script>
+    <script type="x-shader/x-vertex" id="fragmentShader">
+
+        varying float displacement;
+
+        void main() {
+
+            float color = smoothstep( -80.0, 200.0, displacement);
+
+            float r = 1.0 - smoothstep(0.0, 255.0, 40.0 * color);
+            float v = 1.0 - smoothstep(0.0, 255.0, 100.0 * color);
+            float b = 1.0 - smoothstep(0.0, 255.0, 230.0 * color);
+
+            gl_FragColor = vec4(r, v, b, 1);
+            // gl_FragColor = vec4(1, 1, 1, 1);
+
+        }
+
+    </script>
+    <script src="getPosition.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<script>
+
+    // global variables
+    var renderer;
+    var scene;
+    var camera;
+    var car;
+    var mouseout;
+
+    var control;
+    var orbit;
+    var uniforms;
+    var reduceSpeed;
+    var mouse;
+
+    window.addEventListener('mousemove', update, false);
+
+    function init() {
+
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        scene = new THREE.Scene();
+
+        // create a camera, which defines where we're looking at.
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+
+        // create a render, sets the background color and the size
+        renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor(0x000000, 1.0);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // position and point the camera to the center of the scene
+        camera.position.x = 5;
+        camera.position.y = 6;
+        camera.position.z = 3;
+        camera.lookAt(scene.position);
+
+        // add the output of the renderer to the html element
+        document.body.appendChild(renderer.domElement);
+
+        // add orbit control
+        orbit = new THREE.OrbitControls(camera, renderer.domElement);
+
+        var dirLight = new THREE.DirectionalLight();
+        dirLight.position.set(10, 10, 10);
+        scene.add(dirLight);
+
+        var dirLight = new THREE.DirectionalLight();
+        dirLight.position.set(-10, 10, -10);
+        scene.add(dirLight);
+
+
+        // call the render function
+
+        // Model adapted from: http://www.blendswap.com/blends/view/70892
+        var jsonLoader = new THREE.JSONLoader();
+        jsonLoader.load("tree_morphed.json", function (model) {
+
+            // var material = new THREE.MeshLambertMaterial({ color: 0xffffff, morphTargets: true, wireframe: true  });
+            uniforms = {
+              mouse: {
+                type: 'v3',
+                value: new THREE.Vector3( 0, 0, 0 )
+              },
+              time: {
+                type: 'f',
+                value: 0.0
+              }
+            };
+
+            material = new THREE.ShaderMaterial( {
+                wireframe: true,
+                uniforms: uniforms,
+                vertexShader: document.getElementById( 'vertexShader' ).textContent,
+                fragmentShader: document.getElementById( 'fragmentShader' ).textContent
+            });
+
+            // fix some missing facevertexes from the model
+            car = new THREE.Mesh(model, material);
+            console.log(car);
+            // for (var i = 0; i < 60; i++) {
+            //     model.faceVertexUvs[0][i] = [new THREE.Vector2(0, 0), new THREE.Vector2(0, 0), new THREE.Vector2(0, 0)];
+            // }
+
+            // repositon the model
+            car.position.y = -1;
+
+            // add the model and call render
+            scene.add(car);
+            render();
+
+        });
+
+        addControls();
+
+
+    }
+
+    function update(event) {
+        var mouse = getPosition(event, car, camera);
+
+        if (typeof mouse !== 'undefined') {
+            mouse.y += 400;
+            uniforms.mouse.value = new THREE.Vector3( mouse.x, mouse.y, mouse.z );
+            mouseout = false;
+        }
+        else {
+            mouseout = true;
+        }
+    };
+
+    function addControls() {
+        control = new function () {
+            this.mt_1 = 0.01;
+            this.mt_2 = 0.01;
+            this.scale = 1;
+
+            this.animate = false;
+
+        };
+
+        var gui = new dat.GUI();
+        gui.add(control, 'mt_1', 0, 1).step(0.01).listen().onChange(function (a) {
+            car.morphTargetInfluences[0] = a;
+        });
+        gui.add(control, 'mt_2', 0, 1).step(0.01).listen().onChange(function (a) {
+            car.morphTargetInfluences[1] = a;
+        });
+        ;
+        gui.add(control, 'scale', 0, 1).step(0.01).listen().onChange(function (a) {
+            car.scale.x = a;
+            car.scale.y = a;
+            car.scale.z = a;
+        });
+
+        gui.add(control, 'animate');
+    }
+
+
+    var step1 = 0.01;
+    var step2 = 0.01;
+    var step3 = 0.01;
+
+    function render() {
+        renderer.render(scene, camera);
+        orbit.update();
+
+        if (control.animate) {
+            car.morphTargetInfluences[1] += step1;
+            car.morphTargetInfluences[2] += step2;
+            car.morphTargetInfluences[3] += step3;
+
+            if (car.morphTargetInfluences[1] > 1 || car.morphTargetInfluences[1] < 0) step1 *= -1;
+            if (car.morphTargetInfluences[2] > 1 || car.morphTargetInfluences[2] < 0) step2 *= -1;
+            if (car.morphTargetInfluences[3] > 1 || car.morphTargetInfluences[3] < 0) step3 *= -1;
+
+            control.mt_1 = car.morphTargetInfluences[1];
+            control.mt_2 = car.morphTargetInfluences[2];
+            control.mt_3 = car.morphTargetInfluences[3];
+
+
+        }
+
+
+
+        uniforms.time.value ++;
+
+        if ( mouseout === true ){
+            uniforms.mouse.value.x -= reduceSpeed;
+            uniforms.mouse.value.y -= reduceSpeed;
+            uniforms.mouse.value.z -= reduceSpeed;
+        }
+
+        requestAnimationFrame(render);
+    }
+
+    // calls the init function when the window is done loading.
+    window.onload = init;
+
+</script>
+<body>
+</body>
+</html>
