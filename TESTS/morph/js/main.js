@@ -1,7 +1,6 @@
 window.onload = function() {
     var abtract = new draw();
 
-    window.addEventListener('mousemove', abtract.update, false);
     window.addEventListener('click', abtract.consoleBitch, false);
 
     window.addEventListener('resize', abtract.handleResize, false);
@@ -11,11 +10,6 @@ window.onload = function() {
 };
 
 var draw = function() {
-    this.init();
-    this.reduceSpeed = 7;
-};
-
-draw.prototype.init = function(){
 
     this.render = this.render.bind(this);
     this.handleResize = this.handleResize.bind(this);
@@ -25,6 +19,14 @@ draw.prototype.init = function(){
     this.plop = this.plop.bind(this);
 
     this.mouseout = false;
+    this.reduceSpeed = 7;
+    this.step1 = 0.01;
+    this.step2 = 0.01;
+
+    this.init();
+};
+
+draw.prototype.init = function(){
 
     this.container = document.getElementById('exp');
     // this.container = document;
@@ -62,13 +64,8 @@ draw.prototype.init = function(){
 
     this.container.appendChild(this.renderer.domElement);
 
-    this.control = new function(){
-        this.camX = 80;
-        this.camY = 250;
-        this.camZ = 1160;
-        this.rotation = 0.001;
-    };
-    this.addControlGui(this.control);
+    this.addControlGui();
+
     this.addStatsObject();
 
     console.log("Initialazing!");
@@ -92,8 +89,7 @@ draw.prototype.render = function() {
 };
 
 draw.prototype.update = function(event) {
-    var mouse = getPosition(event, this.Mesh, this.camera);
-
+    var mouse = getPosition(event, this.mesh, this.camera);
 
     if (typeof mouse !== 'undefined') {
         mouse.y += 400;
@@ -107,14 +103,33 @@ draw.prototype.update = function(event) {
 
 draw.prototype.consoleBitch = function(event) {
 
-    // this.Mesh.scale.set(100,100,100);
+    // this.mesh.scale.set(100,100,100);
+    // console.log(this.mesh)
+
+    console.log(this.mesh.morphTargetInfluences[0]);
+    console.log(this.mesh);
+
 };
 
 
 
 draw.prototype.addControlGui = function(controlObject) {
+
+    var _this = this;
+
+    this.control = new function () {
+        this.mt_0 = 0.01;
+        this.mt_1 = 0.01;
+    };
+
     var gui = new dat.GUI();
-    gui.add(controlObject, 'rotation', 0.001, 0.02);
+
+    gui.add(this.control, 'mt_0', 0, 1).step(0.01).listen().onChange(function (a) {
+        _this.mesh.morphTargetInfluences[0] = a;
+    });
+    gui.add(this.control, 'mt_1', 0, 1).step(0.01).listen().onChange(function (a) {
+        _this.mesh.morphTargetInfluences[1] = a;
+    });
 };
 
 draw.prototype.addStatsObject = function() {
@@ -135,45 +150,42 @@ draw.prototype.handleResize = function() {
 };
 
 draw.prototype.loadModel = function(url) {
-
-    // this.loader = new THREE.BufferGeometryLoader();
-    // this.loader = new THREE.BinaryLoader();
     this.loader = new THREE.JSONLoader();
-
     this.loader.load( url, this.plop);
 };
 
 draw.prototype.plop = function(geometry) {
 
-    console.log(geometry);
-
     this.geometry = geometry;
 
     this.uniforms = {
-      mouse: {
-        type: 'v3',
-        value: new THREE.Vector3( 0, 0, 0 )
-      },
-      time: {
-        type: 'f',
-        value: 0.0
-      }
+        mouse: {
+            type: 'v3',
+            value: new THREE.Vector3( 0, 0, 0 )
+        },
+        time: {
+            type: 'f',
+            value: 0.0
+        }
     };
 
     this.material = new THREE.ShaderMaterial( {
         wireframe: true,
         uniforms: this.uniforms,
-        vertexShader: document.getElementById( 'vertexShader' ).textContent,
-        fragmentShader: document.getElementById( 'fragmentShader' ).textContent
+        morphTargets: true,
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader
     });
 
 
 
-    this.Mesh = new THREE.Mesh(this.geometry, this.material);
-    this.Mesh.name = "Tree";
-    this.Mesh.position.y = -400;
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh.name = "Tree";
+    this.mesh.position.y = -400;
 
-    this.scene.add(this.Mesh);
+    this.scene.add(this.mesh);
+
+    window.addEventListener('mousemove', this.update, false);
 
     this.render();
 };
