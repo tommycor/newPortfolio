@@ -170,6 +170,9 @@ var vertexShader = [
 
         '/////////////////////////////////////////////////////////// Shader',
 
+        //THREEJS MORPHTARGET
+        THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
+
 
         'varying vec3 vNormal;',
 
@@ -185,15 +188,20 @@ var vertexShader = [
 
         'void main() {',
 
+        //THREEJS MORPHTARGET
+        THREE.ShaderChunk[ "morphtarget_vertex" ],
+
         '    float upper = 500.0;',
-        '    float multiplicator = 3.0;',
+        '    float multiplicator = 2.0;',
 
         '    // float upper = 1500.0;',
-        '    // float multiplicator = 3.0;',
+        '    // float multiplicator = 4.0;',
 
         '    vNormal = normal;',
 
-        '    float distance = distance(mouse, position);',
+        '    vec3 fakePosition = position * vec3(1, 1, 0);',
+
+        '    float distance = distance(mouse, fakePosition);',
 
         '    if (distance > ( upper / multiplicator ) ) {',
         '      // mouseout',
@@ -215,7 +223,8 @@ var vertexShader = [
         '        displacement = 0.0;',
         '    }',
 
-        '    vec3 newPosition = position + normal * vec3(displacement);',
+        //morphed is the variable provided by THREEJS with the ShaderChunk[ "morphtarget_vertex" ]
+        '    vec3 newPosition = morphed + normal * vec3(displacement);',
 
         '    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );',
 

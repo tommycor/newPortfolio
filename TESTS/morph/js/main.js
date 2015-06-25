@@ -42,12 +42,12 @@ draw.prototype.init = function(){
     this.renderer.shadowMapEnabled = true;
 
     // position and point the camera to the center of the scene
-    this.camera.position.x = 500;
-    this.camera.position.y = 40;
-    this.camera.position.z = 1000;
+    this.camera.position.x = -200;
+    this.camera.position.y = -140;
+    this.camera.position.z = 3000;
     this.camera.lookAt( this.scene.position );
 
-    this.orbit = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+    // this.orbit = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
     // add spotlight for the shadows
     this.spotLight = new THREE.SpotLight(0xffffff);
@@ -56,6 +56,19 @@ draw.prototype.init = function(){
     this.spotLight.shadowCameraFar = 50;
     this.spotLight.castShadow = true;
     this.scene.add( this.spotLight );
+
+    this.receptorGeometry = new THREE.PlaneGeometry(3000, 3000);
+    this.receptorMaterial = new THREE.MeshBasicMaterial({ 
+        // visible : false
+        color: 'grey',
+        transparent: true,
+        opacity: 0.5
+    })
+    this.receptor = new THREE.Mesh(this.receptorGeometry, this.receptorMaterial);
+    this.receptor.y = -100;
+    this.receptor.name = 'receptor';
+    this.scene.add(this.receptor);
+
 
     this.light = new THREE.AmbientLight( 0xffffff );
     this.scene.add( this.light );
@@ -72,7 +85,7 @@ draw.prototype.init = function(){
 };
 
 draw.prototype.render = function() {
-    this.orbit.update();
+    // this.orbit.update();
 
     this.stats.update();
     this.renderer.render(this.scene, this.camera);
@@ -89,7 +102,7 @@ draw.prototype.render = function() {
 };
 
 draw.prototype.update = function(event) {
-    var mouse = getPosition(event, this.mesh, this.camera);
+    var mouse = getPosition2D(event, this.receptor, this.camera);
 
     if (typeof mouse !== 'undefined') {
         mouse.y += 400;
@@ -101,16 +114,6 @@ draw.prototype.update = function(event) {
     }
 };
 
-draw.prototype.consoleBitch = function(event) {
-
-    // this.mesh.scale.set(100,100,100);
-    // console.log(this.mesh)
-
-    console.log(this.mesh.morphTargetInfluences[0]);
-    console.log(this.mesh);
-
-};
-
 
 
 draw.prototype.addControlGui = function(controlObject) {
@@ -120,6 +123,9 @@ draw.prototype.addControlGui = function(controlObject) {
     this.control = new function () {
         this.mt_0 = 0.01;
         this.mt_1 = 0.01;
+        this.X = 0.01;
+        this.Y = 0.01;
+        this.Z = 0.01;
     };
 
     var gui = new dat.GUI();
@@ -129,6 +135,15 @@ draw.prototype.addControlGui = function(controlObject) {
     });
     gui.add(this.control, 'mt_1', 0, 1).step(0.01).listen().onChange(function (a) {
         _this.mesh.morphTargetInfluences[1] = a;
+    });
+    gui.add(this.control, 'X', -3000, 3000).step(10).listen().onChange(function (a) {
+        camera.position.x = a;
+    });
+    gui.add(this.control, 'Y', -3000, 3000).step(10).listen().onChange(function (a) {
+        camera.position.y = a;
+    });
+    gui.add(this.control, 'Z', -3000, 3000).step(10).listen().onChange(function (a) {
+        camera.position.z = a;
     });
 };
 
@@ -154,6 +169,7 @@ draw.prototype.loadModel = function(url) {
     this.loader.load( url, this.plop);
 };
 
+
 draw.prototype.plop = function(geometry) {
 
     this.geometry = geometry;
@@ -177,6 +193,8 @@ draw.prototype.plop = function(geometry) {
         fragmentShader: fragmentShader
     });
 
+    // this.material = new THREE.MeshLambertMaterial( {color: 'white', morphTargets : true} );
+
 
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -188,4 +206,18 @@ draw.prototype.plop = function(geometry) {
     window.addEventListener('mousemove', this.update, false);
 
     this.render();
+};
+
+
+draw.prototype.consoleBitch = function(event) {
+
+    // this.mesh.scale.set(100,100,100);
+    // console.log(this.mesh)
+
+    console.log(this.camera.position.x);
+    console.log(this.camera.position.y);
+    console.log(this.camera.position.z);
+
+    this.camera.position.y += 20;
+
 };
