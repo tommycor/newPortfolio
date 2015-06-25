@@ -191,8 +191,8 @@ var vertexShader = [
         //THREEJS MORPHTARGET
         THREE.ShaderChunk[ "morphtarget_vertex" ],
 
-        '    float upper = 500.0;',
-        '    float multiplicator = 2.0;',
+        '    float upper = 400.0;',
+        '    float multiplicator = 1.5;',
 
         '    // float upper = 1500.0;',
         '    // float multiplicator = 4.0;',

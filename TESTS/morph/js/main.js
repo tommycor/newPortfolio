@@ -59,10 +59,10 @@ draw.prototype.init = function(){
 
     this.receptorGeometry = new THREE.PlaneGeometry(3000, 3000);
     this.receptorMaterial = new THREE.MeshBasicMaterial({ 
-        // visible : false
-        color: 'grey',
-        transparent: true,
-        opacity: 0.5
+        visible : false
+        // color: 'grey',
+        // transparent: true,
+        // opacity: 0.5
     })
     this.receptor = new THREE.Mesh(this.receptorGeometry, this.receptorMaterial);
     this.receptor.y = -100;
@@ -73,7 +73,7 @@ draw.prototype.init = function(){
     this.light = new THREE.AmbientLight( 0xffffff );
     this.scene.add( this.light );
 
-    this.geometry = this.loadModel("model/tree_morphed.json");
+    this.geometry = this.loadModel("model/tree_morphed_2.json");
 
     this.container.appendChild(this.renderer.domElement);
 
@@ -123,9 +123,8 @@ draw.prototype.addControlGui = function(controlObject) {
     this.control = new function () {
         this.mt_0 = 0.01;
         this.mt_1 = 0.01;
-        this.X = 0.01;
-        this.Y = 0.01;
-        this.Z = 0.01;
+        this.X = 0;
+        this.Y = 0;
     };
 
     var gui = new dat.GUI();
@@ -137,13 +136,12 @@ draw.prototype.addControlGui = function(controlObject) {
         _this.mesh.morphTargetInfluences[1] = a;
     });
     gui.add(this.control, 'X', -3000, 3000).step(10).listen().onChange(function (a) {
-        camera.position.x = a;
+        _this.camera.position.x = a;
+        _this.camera.lookAt( _this.scene.position );
     });
     gui.add(this.control, 'Y', -3000, 3000).step(10).listen().onChange(function (a) {
-        camera.position.y = a;
-    });
-    gui.add(this.control, 'Z', -3000, 3000).step(10).listen().onChange(function (a) {
-        camera.position.z = a;
+        _this.camera.position.y = a;
+        _this.camera.lookAt( _this.scene.position );
     });
 };
 
