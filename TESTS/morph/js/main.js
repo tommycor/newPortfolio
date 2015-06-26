@@ -23,6 +23,8 @@ var draw = function() {
     this.step1 = 0.01;
     this.step2 = 0.01;
 
+    this.lookAtPosition = new THREE.Vector3(0, 100, 0);
+
     this.init();
 };
 
@@ -42,10 +44,12 @@ draw.prototype.init = function(){
     this.renderer.shadowMapEnabled = true;
 
     // position and point the camera to the center of the scene
-    this.camera.position.x = -200;
+    this.camera.position.x = 0;
     this.camera.position.y = -140;
-    this.camera.position.z = 3000;
-    this.camera.lookAt( this.scene.position );
+    this.camera.position.z = 2600;
+    this.camera.lookAt( this.lookAtPosition );
+
+    console.log(this.scene.position)
 
     // this.orbit = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
@@ -73,7 +77,7 @@ draw.prototype.init = function(){
     this.light = new THREE.AmbientLight( 0xffffff );
     this.scene.add( this.light );
 
-    this.geometry = this.loadModel("model/tree_morphed_2.json");
+    this.geometry = this.loadModel("model/tree_morphed_3.json");
 
     this.container.appendChild(this.renderer.domElement);
 
@@ -96,6 +100,11 @@ draw.prototype.render = function() {
         this.uniforms.mouse.value.x -= this.reduceSpeed;
         this.uniforms.mouse.value.y -= this.reduceSpeed;
         this.uniforms.mouse.value.z -= this.reduceSpeed;
+    }
+
+    if (this.mesh.morphTargetInfluences[0] >= 0){
+        this.mesh.morphTargetInfluences[1] -= 0.004;
+        this.mesh.morphTargetInfluences[0] -= 0.002;
     }
 
     requestAnimationFrame(this.render);
@@ -121,10 +130,10 @@ draw.prototype.addControlGui = function(controlObject) {
     var _this = this;
 
     this.control = new function () {
-        this.mt_0 = 0.01;
-        this.mt_1 = 0.01;
+        this.mt_0 = 0.7;
+        this.mt_1 = 0.7;
         this.X = 0;
-        this.Y = 0;
+        this.Y = -140;
     };
 
     var gui = new dat.GUI();
@@ -137,11 +146,11 @@ draw.prototype.addControlGui = function(controlObject) {
     });
     gui.add(this.control, 'X', -3000, 3000).step(10).listen().onChange(function (a) {
         _this.camera.position.x = a;
-        _this.camera.lookAt( _this.scene.position );
+        _this.camera.lookAt( _this.lookAtPosition );
     });
     gui.add(this.control, 'Y', -3000, 3000).step(10).listen().onChange(function (a) {
         _this.camera.position.y = a;
-        _this.camera.lookAt( _this.scene.position );
+        _this.camera.lookAt( _this.lookAtPosition );
     });
 };
 
@@ -191,12 +200,11 @@ draw.prototype.plop = function(geometry) {
         fragmentShader: fragmentShader
     });
 
-    // this.material = new THREE.MeshLambertMaterial( {color: 'white', morphTargets : true} );
-
-
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.name = "Tree";
+    this.mesh.morphTargetInfluences[0] = 0.4;
+    this.mesh.morphTargetInfluences[1] = 0.7;
     this.mesh.position.y = -400;
 
     this.scene.add(this.mesh);
@@ -209,13 +217,8 @@ draw.prototype.plop = function(geometry) {
 
 draw.prototype.consoleBitch = function(event) {
 
-    // this.mesh.scale.set(100,100,100);
-    // console.log(this.mesh)
-
     console.log(this.camera.position.x);
     console.log(this.camera.position.y);
     console.log(this.camera.position.z);
-
-    this.camera.position.y += 20;
 
 };
