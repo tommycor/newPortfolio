@@ -23,6 +23,13 @@ var draw = function() {
     this.step1 = 0.01;
     this.step2 = 0.01;
 
+    this.planeMeasurement ={
+        depth : 50,
+        width : 100,
+        margin : 200,
+        height : 100
+    }
+
     this.lookAtPosition = new THREE.Vector3(0, 100, 0);
 
     this.init();
@@ -35,7 +42,7 @@ draw.prototype.init = function(){
 
     //// INIT
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 5000);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
 
     ////RENDERER
     this.renderer = new THREE.WebGLRenderer();
@@ -141,11 +148,11 @@ draw.prototype.addControlGui = function(controlObject) {
     gui.add(this.control, 'mt_1', 0, 1).step(0.01).listen().onChange(function (a) {
         _this.mesh.morphTargetInfluences[1] = a;
     });
-    gui.add(this.control, 'X', -3000, 3000).step(10).listen().onChange(function (a) {
+    gui.add(this.control, 'X', -3000, 6000).step(10).listen().onChange(function (a) {
         _this.camera.position.x = a;
         _this.camera.lookAt( _this.lookAtPosition );
     });
-    gui.add(this.control, 'Y', -3000, 3000).step(10).listen().onChange(function (a) {
+    gui.add(this.control, 'Y', -3000, 6000).step(10).listen().onChange(function (a) {
         _this.camera.position.y = a;
         _this.camera.lookAt( _this.lookAtPosition );
     });
@@ -203,8 +210,18 @@ draw.prototype.plop = function(geometry) {
     this.mesh.morphTargetInfluences[0] = 0.4;
     this.mesh.morphTargetInfluences[1] = 0.7;
     this.mesh.position.y = -400;
-
+    this.camera.updateProjectionMatrix();
+    this.mesh.updateMatrixWorld();
+    this.mesh.updateMatrix();
+    this.mesh.rotationAutoUpdate = true;
     this.scene.add(this.mesh);
+
+    this.plane = createPlane3D(this.planeMeasurement.depth, this.planeMeasurement.width, this.planeMeasurement.margin, this.planeMeasurement.height);
+    this.plane.position.x = - ( ( this.planeMeasurement.width * this.planeMeasurement.margin ) / 2 );
+    this.plane.position.y = -650;
+    this.plane.position.z = - 3 * ( this.planeMeasurement.depth * this.planeMeasurement.margin ) /4;
+    // this.plane.applyMatrix( new THREE.Matrix4().makeTranslation( -( this.planeMeasurement.depth * this.planeMeasurement.margin ) /2, 0, 0));
+    this.scene.add(this.plane);
 
     this.animIntro();
 
