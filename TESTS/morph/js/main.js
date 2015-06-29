@@ -184,7 +184,7 @@ draw.prototype.plop = function(geometry) {
     this.uniforms = {
         mouse: {
             type: 'v3',
-            value: new THREE.Vector3( 0, 0, 0 )
+            value: new THREE.Vector3( -3000, -3000, -3000 )
         },
         time: {
             type: 'f',
