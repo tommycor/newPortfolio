@@ -102,10 +102,7 @@ draw.prototype.render = function() {
         this.uniforms.mouse.value.z -= this.reduceSpeed;
     }
 
-    if (this.mesh.morphTargetInfluences[0] >= 0){
-        this.mesh.morphTargetInfluences[1] -= 0.004;
-        this.mesh.morphTargetInfluences[0] -= 0.002;
-    }
+    TWEEN.update();
 
     requestAnimationFrame(this.render);
 };
@@ -209,16 +206,42 @@ draw.prototype.plop = function(geometry) {
 
     this.scene.add(this.mesh);
 
+    this.animIntro();
+
     window.addEventListener('mousemove', this.update, false);
 
     this.render();
 };
 
+draw.prototype.animIntro = function() {
+
+    var _this = this;
+
+    var start = {
+        Influence0 : _this.mesh.morphTargetInfluences[0],
+        Influence1 : _this.mesh.morphTargetInfluences[1]
+    }
+    var end = {
+        Influence0 : 0,
+        Influence1 : 0
+    }
+
+    var tween1 = new TWEEN.Tween(start)
+            .to(end, 5000)
+            .onUpdate(function(){
+                _this.mesh.morphTargetInfluences[0] = this.Influence0;
+                _this.mesh.morphTargetInfluences[1] = this.Influence1;
+            })
+            .easing(TWEEN.Easing.Quadratic.InOut)
+            .start();
+
+}
+
 
 draw.prototype.consoleBitch = function(event) {
 
-    console.log(this.camera.position.x);
-    console.log(this.camera.position.y);
-    console.log(this.camera.position.z);
+    var _this = this;
+
+    TweenLite.to(logo, 2, {left:"542px", backgroundColor:"black", borderBottomColor:"#90e500", color:"white"});
 
 };
