@@ -24,10 +24,10 @@ var draw = function() {
     this.step2 = 0.01;
 
     this.planeMeasurement ={
-        depth : 50,
-        width : 100,
-        margin : 200,
-        height : 100
+        width : 1.8 * Math.pow(10, 4),
+        depth : 1.5 * Math.pow(10, 4),
+        maxHeight : 100,
+        subDiv : 30
     }
 
     this.lookAtPosition = new THREE.Vector3(0, 100, 0);
@@ -42,7 +42,8 @@ draw.prototype.init = function(){
 
     //// INIT
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 15000);
+    // this.camera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 10000);
 
     ////RENDERER
     this.renderer = new THREE.WebGLRenderer();
@@ -56,17 +57,28 @@ draw.prototype.init = function(){
     this.camera.position.z = 2600;
     this.camera.lookAt( this.lookAtPosition );
 
-    console.log(this.scene.position)
-
     // this.orbit = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
     // add spotlight for the shadows
     this.spotLight = new THREE.SpotLight(0xffffff);
-    this.spotLight.position.set(10, 20, 20);
-    this.spotLight.shadowCameraNear = 20;
-    this.spotLight.shadowCameraFar = 50;
+    this.spotLight.distance = 10000;
+    this.spotLight.exponent = 0.1;
+    this.spotLight.itensity = 1;
+    this.spotLight.position.set(0, 100, 2000);
+    this.spotLight.shadowCameraNear = 5000;
+    this.spotLight.shadowCameraFar = 2000;
     this.spotLight.castShadow = true;
+    this.spotLight.target.position.set( 0, -500, -1000 );
+    this.spotLight.target.updateMatrixWorld();
     this.scene.add( this.spotLight );
+    this.scene.add( this.spotLight.target );
+    console.log(this.spotLight);
+
+    this.SpotLightHelper = new THREE.SpotLightHelper(this.spotLight, 10);
+    this.scene.add( this.SpotLightHelper );
+
+    // this.ambientLight = new THREE.AmbientLight(0xffffff);
+    // this.scene.add(this.ambientLight);
 
     this.receptorGeometry = new THREE.PlaneGeometry(3000, 3000);
     this.receptorMaterial = new THREE.MeshBasicMaterial({ 
@@ -80,9 +92,7 @@ draw.prototype.init = function(){
     this.receptor.name = 'receptor';
     this.scene.add(this.receptor);
 
-
-    this.light = new THREE.AmbientLight( 0xffffff );
-    this.scene.add( this.light );
+    this.createPlane();
 
     this.geometry = this.loadModel("model/tree_morphed_3.json");
 
@@ -214,14 +224,8 @@ draw.prototype.plop = function(geometry) {
     this.mesh.updateMatrixWorld();
     this.mesh.updateMatrix();
     this.mesh.rotationAutoUpdate = true;
+    this.mesh.castShadow = true;
     this.scene.add(this.mesh);
-
-    this.plane = createPlane3D(this.planeMeasurement.depth, this.planeMeasurement.width, this.planeMeasurement.margin, this.planeMeasurement.height);
-    this.plane.position.x = - ( ( this.planeMeasurement.width * this.planeMeasurement.margin ) / 2 );
-    this.plane.position.y = -650;
-    this.plane.position.z = - 3 * ( this.planeMeasurement.depth * this.planeMeasurement.margin ) /4;
-    // this.plane.applyMatrix( new THREE.Matrix4().makeTranslation( -( this.planeMeasurement.depth * this.planeMeasurement.margin ) /2, 0, 0));
-    this.scene.add(this.plane);
 
     this.animIntro();
 
@@ -254,11 +258,35 @@ draw.prototype.animIntro = function() {
 
 }
 
+draw.prototype.createPlane = function() {
+
+
+    this.planeGeometry = new THREE.PlaneGeometry( this.planeMeasurement.width, this.planeMeasurement.depth, this.planeMeasurement.subDiv, this.planeMeasurement.subDiv );
+    for (i = 0; i < this.planeGeometry.vertices.length ; i++){
+        this.planeGeometry.vertices[i].x += Math.random() * 100 - 50;
+        this.planeGeometry.vertices[i].y += Math.random() * 100 - 50;
+        this.planeGeometry.vertices[i].z += Math.random() * 100 - 50;
+    }
+    this.planeGeometry.verticesNeedUpdate = true;
+    this.planeMaterial = new THREE.MeshLambertMaterial({
+        // wireframe : true,
+        color: 0x202020
+    });
+    this.plane = new THREE.Mesh(this.planeGeometry, this.planeMaterial)
+    this.plane.name = "plane"
+    this.plane.receiveShadow = true;
+    this.plane.castShadow = true;
+    this.plane.position.y = -650;
+    this.plane.rotation.x = -Math.PI/2
+    this.plane.position.z = - this.planeMeasurement.depth / 2 + 1200;
+    this.scene.add(this.plane);
+
+    this.edges = new THREE.EdgesHelper( this.plane, 0xbe8b40 );
+    this.scene.add(this.edges);
+
+}
+
 
 draw.prototype.consoleBitch = function(event) {
-
-    var _this = this;
-
-    TweenLite.to(logo, 2, {left:"542px", backgroundColor:"black", borderBottomColor:"#90e500", color:"white"});
-
+    // Console those bitchy things
 };
