@@ -30,8 +30,8 @@ var draw = function() {
         subDiv : 30
     }
     this.mountainMeasurement = {
-        width : 2.2 * Math.pow(10, 4),
-        depth : 1 * Math.pow(10, 3),
+        width : 2.5 * Math.pow(10, 4),
+        depth : 5 * Math.pow(10, 3),
         maxHeight : 2500,
         subDiv : 10
     }
@@ -48,12 +48,12 @@ draw.prototype.init = function(){
 
     //// INIT
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 15000);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
     // this.camera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 10000);
 
     ////RENDERER
     this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setClearColor(0x000000, 1.0);
+    this.renderer.setClearColor(0x031019, 1.0);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.shadowMapEnabled = true;
 
@@ -91,10 +91,10 @@ draw.prototype.init = function(){
     this.scene.add( this.directionalLight );
     this.scene.add( this.directionalLight.target );
 
-    this.DirectionalLight = new THREE.DirectionalLightHelper(this.directionalLight, 10);
+    // this.DirectionalLight = new THREE.DirectionalLightHelper(this.directionalLight, 10);
     this.scene.add( this.DirectionalLight );
 
-    this.SpotLightHelper = new THREE.SpotLightHelper(this.spotLight, 10);
+    // this.SpotLightHelper = new THREE.SpotLightHelper(this.spotLight, 10);
     this.scene.add( this.SpotLightHelper );
 
     // this.ambientLight = new THREE.AmbientLight(0xffffff);
@@ -168,6 +168,7 @@ draw.prototype.addControlGui = function(controlObject) {
         this.mt_1 = 0.7;
         this.X = 0;
         this.Y = -140;
+        this.Z = 2300;
     };
 
     var gui = new dat.GUI();
@@ -184,6 +185,10 @@ draw.prototype.addControlGui = function(controlObject) {
     });
     gui.add(this.control, 'Y', -3000, 10000).step(10).listen().onChange(function (a) {
         _this.camera.position.y = a;
+        _this.camera.lookAt( _this.lookAtPosition );
+    });
+    gui.add(this.control, 'Z', -3000, 10000).step(10).listen().onChange(function (a) {
+        _this.camera.position.z = a;
         _this.camera.lookAt( _this.lookAtPosition );
     });
 };
@@ -286,6 +291,11 @@ draw.prototype.createPlane = function() {
         this.planeGeometry.vertices[i].x += Math.random() * 100 - 50;
         this.planeGeometry.vertices[i].y += Math.random() * 100 - 50;
         this.planeGeometry.vertices[i].z += Math.random() * this.planeMeasurement.maxHeight - ( this.planeMeasurement.maxHeight / 2 );
+
+        if ( i <= this.planeMeasurement.subDiv){
+            this.planeGeometry.vertices[i].z = 0;
+        }
+        console.log(this.planeGeometry.vertices[i].z);
     }
     this.planeGeometry.verticesNeedUpdate = true;
     this.planeMaterial = new THREE.MeshLambertMaterial({
@@ -303,7 +313,6 @@ draw.prototype.createPlane = function() {
     this.scene.add(this.plane);
 
     this.edges = new THREE.EdgesHelper( this.plane, 0xbe8b40 );
-    // this.edges = new THREE.EdgesHelper( this.plane, 0xffffff );
     this.scene.add(this.edges);
 
 
@@ -311,34 +320,28 @@ draw.prototype.createPlane = function() {
     for (i = 0; i < this.mountainGeometry.vertices.length ; i++){
         this.mountainGeometry.vertices[i].x += Math.random() * 100 - 50;
         this.mountainGeometry.vertices[i].y += Math.random() * 100 - 50;
+        this.mountainGeometry.vertices[i].z += Math.random() * this.mountainMeasurement.maxHeight;
 
-        if ( i >= this.mountainMeasurement.subDiv){
-            this.mountainGeometry.vertices[i].z += Math.random() * this.mountainMeasurement.maxHeight;
+        if ( this.mountainGeometry.vertices[i].y <= 1000){
+            this.mountainGeometry.vertices[i].z = -800;
         }
-        else{
-            this.mountainGeometry.vertices[i].z = 0;
-        }
-
     }
+
     this.mountainGeometry.verticesNeedUpdate = true;
     this.mountainMaterial = new THREE.MeshLambertMaterial({
-        // wireframe : true,
         color: 0x606060,
         side: THREE.DoubleSide
-        // color: 'white'
     });
     this.mountain = new THREE.Mesh(this.mountainGeometry, this.planeMaterial)
     this.mountain.name = "plane"
     this.mountain.receiveShadow = true;
     this.mountain.castShadow = true;
-    this.mountain.position.y = -1400;
     this.mountain.rotation.x = -Math.PI/2;
     this.mountain.position.z = -9000;
-    // this.mountain.position.z = - this.planeMeasurement.depth / 2 + 1400;
     this.scene.add(this.mountain);
 
-    // this.edgesMountain = new THREE.EdgesHelper( this.mountain, 0xbe8b40 );
-    // this.scene.add(this.edgesMountain);
+    this.edgesMountain = new THREE.EdgesHelper( this.mountain, 0xbe8b40 );
+    this.scene.add(this.edgesMountain);
 
 }
 
