@@ -182,10 +182,6 @@ var vertexShader = [
 
         'varying float displacement;',
 
-        'float rand(vec2 co){',
-        '    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);',
-        '}',
-
         'void main() {',
 
         //THREEJS MORPHTARGET

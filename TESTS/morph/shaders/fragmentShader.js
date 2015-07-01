@@ -3,7 +3,7 @@ var fragmentShader = [
 
     '    void main() {',
 
-    '        float color = smoothstep( -80.0, 200.0, displacement);',
+    '        float color = smoothstep( -70.0, 200.0, displacement);',
 
     '        float r = 1.0 - smoothstep(0.0, 255.0, 40.0 * color);',
     '        float v = 1.0 - smoothstep(0.0, 255.0, 100.0 * color);',

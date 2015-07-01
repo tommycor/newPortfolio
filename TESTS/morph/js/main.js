@@ -23,11 +23,17 @@ var draw = function() {
     this.step1 = 0.01;
     this.step2 = 0.01;
 
-    this.planeMeasurement ={
+    this.planeMeasurement = {
         width : 1.8 * Math.pow(10, 4),
-        depth : 1.5 * Math.pow(10, 4),
-        maxHeight : 100,
+        depth : 1 * Math.pow(10, 4),
+        maxHeight : 300,
         subDiv : 30
+    }
+    this.mountainMeasurement = {
+        width : 2.2 * Math.pow(10, 4),
+        depth : 1 * Math.pow(10, 3),
+        maxHeight : 2500,
+        subDiv : 10
     }
 
     this.lookAtPosition = new THREE.Vector3(0, 100, 0);
@@ -54,25 +60,39 @@ draw.prototype.init = function(){
     // position and point the camera to the center of the scene
     this.camera.position.x = 0;
     this.camera.position.y = -140;
-    this.camera.position.z = 2600;
+    this.camera.position.z = 2300;
     this.camera.lookAt( this.lookAtPosition );
 
     // this.orbit = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
     // add spotlight for the shadows
-    this.spotLight = new THREE.SpotLight(0xffffff);
-    this.spotLight.distance = 10000;
+    this.spotLight = new THREE.SpotLight(0xffffff, 10);
+    this.spotLight.distance = 20000;
     this.spotLight.exponent = 0.1;
-    this.spotLight.itensity = 1;
-    this.spotLight.position.set(0, 100, 2000);
-    this.spotLight.shadowCameraNear = 5000;
-    this.spotLight.shadowCameraFar = 2000;
+    this.spotLight.angle = Math.PI/4;
+    // this.spotLight.onlyShadow = true;
+    this.spotLight.position.set(0, 0, 3000);
     this.spotLight.castShadow = true;
-    this.spotLight.target.position.set( 0, -500, -1000 );
+    this.spotLight.shadowCameraNear = 50;
+    this.spotLight.shadowCameraFar = 1000;
+    this.spotLight.shadowDarkness = 1;
+    this.spotLight.target.position.set( 0, -2000, -10000 );
     this.spotLight.target.updateMatrixWorld();
     this.scene.add( this.spotLight );
     this.scene.add( this.spotLight.target );
-    console.log(this.spotLight);
+
+    this.directionalLight = new THREE.DirectionalLight( 0xffffff, 5 );
+    // this.directionalLight.castShadow = true;
+    this.directionalLight.position.set(0, 0, 2000);
+    this.directionalLight.target.position.set( 0, -1000, -15000 );
+    this.directionalLight.target.updateMatrixWorld();
+    this.directionalLight.shadowCameraNear = 500;
+    this.directionalLight.shadowCameraFar = 10000;
+    this.scene.add( this.directionalLight );
+    this.scene.add( this.directionalLight.target );
+
+    this.DirectionalLight = new THREE.DirectionalLightHelper(this.directionalLight, 10);
+    this.scene.add( this.DirectionalLight );
 
     this.SpotLightHelper = new THREE.SpotLightHelper(this.spotLight, 10);
     this.scene.add( this.SpotLightHelper );
@@ -162,7 +182,7 @@ draw.prototype.addControlGui = function(controlObject) {
         _this.camera.position.x = a;
         _this.camera.lookAt( _this.lookAtPosition );
     });
-    gui.add(this.control, 'Y', -3000, 6000).step(10).listen().onChange(function (a) {
+    gui.add(this.control, 'Y', -3000, 10000).step(10).listen().onChange(function (a) {
         _this.camera.position.y = a;
         _this.camera.lookAt( _this.lookAtPosition );
     });
@@ -265,12 +285,13 @@ draw.prototype.createPlane = function() {
     for (i = 0; i < this.planeGeometry.vertices.length ; i++){
         this.planeGeometry.vertices[i].x += Math.random() * 100 - 50;
         this.planeGeometry.vertices[i].y += Math.random() * 100 - 50;
-        this.planeGeometry.vertices[i].z += Math.random() * 100 - 50;
+        this.planeGeometry.vertices[i].z += Math.random() * this.planeMeasurement.maxHeight - ( this.planeMeasurement.maxHeight / 2 );
     }
     this.planeGeometry.verticesNeedUpdate = true;
     this.planeMaterial = new THREE.MeshLambertMaterial({
         // wireframe : true,
-        color: 0x202020
+        color: 0x606060
+        // color: 'white'
     });
     this.plane = new THREE.Mesh(this.planeGeometry, this.planeMaterial)
     this.plane.name = "plane"
@@ -278,11 +299,46 @@ draw.prototype.createPlane = function() {
     this.plane.castShadow = true;
     this.plane.position.y = -650;
     this.plane.rotation.x = -Math.PI/2
-    this.plane.position.z = - this.planeMeasurement.depth / 2 + 1200;
+    this.plane.position.z = - this.planeMeasurement.depth / 2 + 1400;
     this.scene.add(this.plane);
 
     this.edges = new THREE.EdgesHelper( this.plane, 0xbe8b40 );
+    // this.edges = new THREE.EdgesHelper( this.plane, 0xffffff );
     this.scene.add(this.edges);
+
+
+    this.mountainGeometry = new THREE.PlaneGeometry( this.mountainMeasurement.width, this.mountainMeasurement.depth, this.mountainMeasurement.subDiv, this.mountainMeasurement.subDiv );
+    for (i = 0; i < this.mountainGeometry.vertices.length ; i++){
+        this.mountainGeometry.vertices[i].x += Math.random() * 100 - 50;
+        this.mountainGeometry.vertices[i].y += Math.random() * 100 - 50;
+
+        if ( i >= this.mountainMeasurement.subDiv){
+            this.mountainGeometry.vertices[i].z += Math.random() * this.mountainMeasurement.maxHeight;
+        }
+        else{
+            this.mountainGeometry.vertices[i].z = 0;
+        }
+
+    }
+    this.mountainGeometry.verticesNeedUpdate = true;
+    this.mountainMaterial = new THREE.MeshLambertMaterial({
+        // wireframe : true,
+        color: 0x606060,
+        side: THREE.DoubleSide
+        // color: 'white'
+    });
+    this.mountain = new THREE.Mesh(this.mountainGeometry, this.planeMaterial)
+    this.mountain.name = "plane"
+    this.mountain.receiveShadow = true;
+    this.mountain.castShadow = true;
+    this.mountain.position.y = -1400;
+    this.mountain.rotation.x = -Math.PI/2;
+    this.mountain.position.z = -9000;
+    // this.mountain.position.z = - this.planeMeasurement.depth / 2 + 1400;
+    this.scene.add(this.mountain);
+
+    // this.edgesMountain = new THREE.EdgesHelper( this.mountain, 0xbe8b40 );
+    // this.scene.add(this.edgesMountain);
 
 }
 
