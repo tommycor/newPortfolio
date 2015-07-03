@@ -36,6 +36,14 @@ var draw = function() {
         subDiv : 10
     }
 
+    this.skyMeasurement = {
+        width : 3 * Math.pow(10, 4),
+        depth : 1 * Math.pow(10, 4),
+        maxHeight : 2500,
+        texture : 'model/skyNight.jpg',
+        subDiv : 4
+    }
+
     this.lookAtPosition = new THREE.Vector3(0, 100, 0);
 
     this.init();
@@ -78,8 +86,8 @@ draw.prototype.init = function(){
     this.spotLight.shadowDarkness = 1;
     this.spotLight.target.position.set( 0, -2000, -10000 );
     this.spotLight.target.updateMatrixWorld();
-    this.scene.add( this.spotLight );
-    this.scene.add( this.spotLight.target );
+    // this.scene.add( this.spotLight );
+    // this.scene.add( this.spotLight.target );
 
     this.directionalLight = new THREE.DirectionalLight( 0xffffff, 5 );
     // this.directionalLight.castShadow = true;
@@ -88,17 +96,8 @@ draw.prototype.init = function(){
     this.directionalLight.target.updateMatrixWorld();
     this.directionalLight.shadowCameraNear = 500;
     this.directionalLight.shadowCameraFar = 10000;
-    this.scene.add( this.directionalLight );
-    this.scene.add( this.directionalLight.target );
-
-    // this.DirectionalLight = new THREE.DirectionalLightHelper(this.directionalLight, 10);
-    this.scene.add( this.DirectionalLight );
-
-    // this.SpotLightHelper = new THREE.SpotLightHelper(this.spotLight, 10);
-    this.scene.add( this.SpotLightHelper );
-
-    // this.ambientLight = new THREE.AmbientLight(0xffffff);
-    // this.scene.add(this.ambientLight);
+    // this.scene.add( this.directionalLight );
+    // this.scene.add( this.directionalLight.target );
 
     this.receptorGeometry = new THREE.PlaneGeometry(3000, 3000);
     this.receptorMaterial = new THREE.MeshBasicMaterial({ 
@@ -112,7 +111,12 @@ draw.prototype.init = function(){
     this.receptor.name = 'receptor';
     this.scene.add(this.receptor);
 
+    this.ambient = new THREE.AmbientLight( 0xffffff );
+    this.scene.add(this.ambient);
+
     this.createPlane();
+
+    this.createSky();
 
     this.geometry = this.loadModel("model/tree_morphed_3.json");
 
@@ -235,8 +239,8 @@ draw.prototype.plop = function(geometry) {
         wireframe: true,
         uniforms: this.uniforms,
         morphTargets: true,
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader
+        vertexShader: tree_vertexShader,
+        fragmentShader: tree_fragmentShader
     });
 
 
@@ -291,29 +295,23 @@ draw.prototype.createPlane = function() {
         this.planeGeometry.vertices[i].x += Math.random() * 100 - 50;
         this.planeGeometry.vertices[i].y += Math.random() * 100 - 50;
         this.planeGeometry.vertices[i].z += Math.random() * this.planeMeasurement.maxHeight - ( this.planeMeasurement.maxHeight / 2 );
-
-        if ( i <= this.planeMeasurement.subDiv){
-            this.planeGeometry.vertices[i].z = 0;
-        }
-        console.log(this.planeGeometry.vertices[i].z);
     }
     this.planeGeometry.verticesNeedUpdate = true;
-    this.planeMaterial = new THREE.MeshLambertMaterial({
-        // wireframe : true,
-        color: 0x606060
-        // color: 'white'
+    this.planeMaterial = new THREE.ShaderMaterial( {
+        vertexShader: floor_vertexShader,
+        fragmentShader: floor_fragmentShader
     });
     this.plane = new THREE.Mesh(this.planeGeometry, this.planeMaterial)
     this.plane.name = "plane"
     this.plane.receiveShadow = true;
     this.plane.castShadow = true;
     this.plane.position.y = -650;
-    this.plane.rotation.x = -Math.PI/2
+    this.plane.rotation.x = -Math.PI/2;
     this.plane.position.z = - this.planeMeasurement.depth / 2 + 1400;
     this.scene.add(this.plane);
 
     this.edges = new THREE.EdgesHelper( this.plane, 0xbe8b40 );
-    this.scene.add(this.edges);
+    // this.scene.add(this.edges);
 
 
     this.mountainGeometry = new THREE.PlaneGeometry( this.mountainMeasurement.width, this.mountainMeasurement.depth, this.mountainMeasurement.subDiv, this.mountainMeasurement.subDiv );
@@ -328,24 +326,49 @@ draw.prototype.createPlane = function() {
     }
 
     this.mountainGeometry.verticesNeedUpdate = true;
-    this.mountainMaterial = new THREE.MeshLambertMaterial({
-        color: 0x606060,
-        side: THREE.DoubleSide
+    // this.mountainMaterial = new THREE.MeshLambertMaterial({
+        // color: 0x606060,
+        // side: THREE.DoubleSide
+    // });
+    this.mountainMaterial = new THREE.ShaderMaterial( {
+        vertexShader: mountain_vertexShader,
+        fragmentShader: mountain_fragmentShader
     });
-    this.mountain = new THREE.Mesh(this.mountainGeometry, this.planeMaterial)
-    this.mountain.name = "plane"
-    this.mountain.receiveShadow = true;
-    this.mountain.castShadow = true;
+
+    this.mountain = new THREE.Mesh(this.mountainGeometry, this.mountainMaterial)
+    this.mountain.name = "mountain";
     this.mountain.rotation.x = -Math.PI/2;
     this.mountain.position.z = -9000;
     this.scene.add(this.mountain);
 
     this.edgesMountain = new THREE.EdgesHelper( this.mountain, 0xbe8b40 );
-    this.scene.add(this.edgesMountain);
+    // this.scene.add(this.edgesMountain);
 
+}
+
+draw.prototype.createSky = function() {
+    this.skyGeometry = new THREE.PlaneGeometry( this.skyMeasurement.width, this.skyMeasurement.depth, this.skyMeasurement.subDiv, this.skyMeasurement.subDiv );
+    this.skyGeometry.verticesNeedUpdate = true;
+    this.skyTexture = THREE.ImageUtils.loadTexture( this.skyMeasurement.texture );
+    this.skyTexture.wrapS = THREE.RepeatWrapping;
+    this.skyTexture.wrapT = THREE.RepeatWrapping;
+    this.skyTexture.repeat = 1  ;
+    this.skyTexture.minFilter = THREE.LinearFilter ;
+    this.skyMaterial = new THREE.MeshLambertMaterial({
+        map: this.skyTexture,
+        side:THREE.DoubleSide
+    });
+    this.sky = new THREE.Mesh(this.skyGeometry, this.skyMaterial)
+    this.sky.name = "sky"
+    this.sky.receiveShadow = true;
+    this.sky.castShadow = true;
+    this.sky.position.y = 5000;
+    this.sky.position.z = -13000;
+    this.sky.material.needsUpdate = true;
+    this.scene.add(this.sky);
 }
 
 
 draw.prototype.consoleBitch = function(event) {
-    // Console those bitchy things
+    this.sky.material.needsUpdate = true;
 };

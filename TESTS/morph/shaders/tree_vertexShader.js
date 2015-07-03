@@ -1,4 +1,4 @@
-var vertexShader = [
+var tree_vertexShader = [
 
         '/////////////////////////////////////////////////////////// Ashima noise3D',
 

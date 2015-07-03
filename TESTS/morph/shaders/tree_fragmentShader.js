@@ -1,4 +1,4 @@
-var fragmentShader = [
+var tree_fragmentShader = [
 	'    varying float displacement;',
 
     '    void main() {',
