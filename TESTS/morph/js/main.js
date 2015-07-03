@@ -183,7 +183,7 @@ draw.prototype.addControlGui = function(controlObject) {
     gui.add(this.control, 'mt_1', 0, 1).step(0.01).listen().onChange(function (a) {
         _this.mesh.morphTargetInfluences[1] = a;
     });
-    gui.add(this.control, 'X', -3000, 6000).step(10).listen().onChange(function (a) {
+    gui.add(this.control, 'X', -200, 200).step(10).listen().onChange(function (a) {
         _this.camera.position.x = a;
         _this.camera.lookAt( _this.lookAtPosition );
     });
