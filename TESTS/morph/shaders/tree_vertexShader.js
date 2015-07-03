@@ -202,7 +202,7 @@ var tree_vertexShader = [
         '    if (distance > ( upper / multiplicator ) ) {',
         '      // mouseout',
 
-        '        displacement = 20.0 * pnoise( 0.05 * position + 0.005 * time, vec3( 1.0 ) ) ;',
+        '        displacement = 15.0 * pnoise( 0.05 * position + 0.005 * time, vec3( 1.0 ) ) ;',
         '    }',
         '    else {',
         '      //mousein',

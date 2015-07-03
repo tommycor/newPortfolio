@@ -40,7 +40,7 @@ var draw = function() {
         width : 3 * Math.pow(10, 4),
         depth : 1 * Math.pow(10, 4),
         maxHeight : 2500,
-        texture : 'model/skyNight.jpg',
+        texture : 'model/skyNight_2.jpg',
         subDiv : 4
     }
 
@@ -61,7 +61,7 @@ draw.prototype.init = function(){
 
     ////RENDERER
     this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setClearColor(0x031019, 1.0);
+    this.renderer.setClearColor(0xffffff, 1.0);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.shadowMapEnabled = true;
 
@@ -74,28 +74,28 @@ draw.prototype.init = function(){
     // this.orbit = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 
     // add spotlight for the shadows
-    this.spotLight = new THREE.SpotLight(0xffffff, 10);
-    this.spotLight.distance = 20000;
-    this.spotLight.exponent = 0.1;
-    this.spotLight.angle = Math.PI/4;
+    // this.spotLight = new THREE.SpotLight(0xffffff, 10);
+    // this.spotLight.distance = 20000;
+    // this.spotLight.exponent = 0.1;
+    // this.spotLight.angle = Math.PI/4;
     // this.spotLight.onlyShadow = true;
-    this.spotLight.position.set(0, 0, 3000);
-    this.spotLight.castShadow = true;
-    this.spotLight.shadowCameraNear = 50;
-    this.spotLight.shadowCameraFar = 1000;
-    this.spotLight.shadowDarkness = 1;
-    this.spotLight.target.position.set( 0, -2000, -10000 );
-    this.spotLight.target.updateMatrixWorld();
+    // this.spotLight.position.set(0, 0, 3000);
+    // this.spotLight.castShadow = true;
+    // this.spotLight.shadowCameraNear = 50;
+    // this.spotLight.shadowCameraFar = 1000;
+    // this.spotLight.shadowDarkness = 1;
+    // this.spotLight.target.position.set( 0, -2000, -10000 );
+    // this.spotLight.target.updateMatrixWorld();
     // this.scene.add( this.spotLight );
     // this.scene.add( this.spotLight.target );
 
-    this.directionalLight = new THREE.DirectionalLight( 0xffffff, 5 );
+    // this.directionalLight = new THREE.DirectionalLight( 0xffffff, 5 );
     // this.directionalLight.castShadow = true;
-    this.directionalLight.position.set(0, 0, 2000);
-    this.directionalLight.target.position.set( 0, -1000, -15000 );
-    this.directionalLight.target.updateMatrixWorld();
-    this.directionalLight.shadowCameraNear = 500;
-    this.directionalLight.shadowCameraFar = 10000;
+    // this.directionalLight.position.set(0, 0, 2000);
+    // this.directionalLight.target.position.set( 0, -1000, -15000 );
+    // this.directionalLight.target.updateMatrixWorld();
+    // this.directionalLight.shadowCameraNear = 500;
+    // this.directionalLight.shadowCameraFar = 10000;
     // this.scene.add( this.directionalLight );
     // this.scene.add( this.directionalLight.target );
 
@@ -355,9 +355,11 @@ draw.prototype.createSky = function() {
     this.skyTexture.repeat = 1  ;
     this.skyTexture.minFilter = THREE.LinearFilter ;
     this.skyMaterial = new THREE.MeshLambertMaterial({
-        map: this.skyTexture,
+        // map: this.skyTexture,
+        map: THREE.ImageUtils.loadTexture( this.skyMeasurement.texture ),
         side:THREE.DoubleSide
     });
+    console.log(this.skyMaterial);
     this.sky = new THREE.Mesh(this.skyGeometry, this.skyMaterial)
     this.sky.name = "sky"
     this.sky.receiveShadow = true;
