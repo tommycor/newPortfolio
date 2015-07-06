@@ -40,7 +40,7 @@ var draw = function() {
         width : 3 * Math.pow(10, 4),
         depth : 1 * Math.pow(10, 4),
         maxHeight : 2500,
-        texture : 'model/skyNight_2.jpg',
+        texture : 'model/skyNight.jpg',
         subDiv : 4
     }
 
@@ -118,7 +118,7 @@ draw.prototype.init = function(){
 
     this.createSky();
 
-    this.geometry = this.loadModel("model/tree_morphed_3.json");
+    this.geometry = this.loadModel("model/tree_morphed.json");
 
     this.container.appendChild(this.renderer.domElement);
 
