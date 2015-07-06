@@ -21,7 +21,7 @@ var draw = function() {
 	this.mouseout = false;
 	this.reduceSpeed = 7;
 
-	this.nbrParticles = 100;
+	this.nbrParticles = 500;
 
 
 	this.planeMeasurement = {
@@ -139,6 +139,7 @@ draw.prototype.render = function() {
 	this.renderer.render(this.scene, this.camera);
 
 	this.uniforms.time.value ++;
+	// this.particlesUniforms['time'].value ++;
 
 	if ( this.mouseout === true ){
 		this.uniforms.mouse.value.x -= this.reduceSpeed;
@@ -372,35 +373,35 @@ draw.prototype.createParticles = function() {
 
 	this.particlesGeometry = new THREE.Geometry();
 	this.pSize = [];
-	this.pPos = [];
 
 	for (var i = 0; i < this.nbrParticles; i++) {
 
 		var v = new THREE.Vector3();
-		v.x = Math.random() * 1000;
-		v.y = Math.random() * 1000;
-		v.z = Math.random() * 100;
+		v.x = Math.random() * 10000;
+		v.y = Math.random() * 100;
+		v.z = Math.random() * 10000;
 
 		// add the vertex
 		this.particlesGeometry.vertices.push(v);
 
-		this.pSize.push(Math.random());
-		this.pPos.push(Math.random() * this.planeMeasurement);
+		this.pSize.push(Math.random()*50);
+
+		// this.pSize.push(100);
 		
 	}
 
 
 	this.particulesAttributes = {
-		pSize: {type: 'f', value: this.pSize},
-		pPos: {type: 'f', value: this.pPos}
+		pSize: {type: 'f', value: this.pSize}
 	};
 
 	var basicShader = THREE.ShaderLib['particle_basic'];
 	this.particlesUniforms = THREE.UniformsUtils.merge([basicShader.uniforms]);
-	this.particlesUniforms['map'].value = THREE.ImageUtils.loadTexture("model/ps_smoke.png");
+	this.particlesUniforms['map'].value = THREE.ImageUtils.loadTexture("model/ps_smoke_2.png");
 	this.particlesUniforms['size'].value = 100;
 	this.particlesUniforms['opacity'].value = 0.5;
 	this.particlesUniforms['psColor'].value = new THREE.Color(0xffffff);
+	// this.particlesUniforms['time'].value = 0;
 
 	// this.particlesUniforms = {
 	//     planeWidth: {type: 'f', value: this.planeMeasurement.width},
@@ -417,6 +418,9 @@ draw.prototype.createParticles = function() {
 	});
 
 	this.particles = new THREE.PointCloud(this.particlesGeometry, this.particlcesMaterial);
+	this.particles.position.x = -5000;
+	this.particles.position.y = -550;
+	this.particles.position.z = -6000;
 	this.particles.sortParticles = true;
 
 	this.scene.add(this.particles);
