@@ -20,8 +20,9 @@ var draw = function() {
 
     this.mouseout = false;
     this.reduceSpeed = 7;
-    this.step1 = 0.01;
-    this.step2 = 0.01;
+
+    this.nbrParticles = 100;
+
 
     this.planeMeasurement = {
         width : 1.8 * Math.pow(10, 4),
@@ -40,7 +41,7 @@ var draw = function() {
         width : 3 * Math.pow(10, 4),
         depth : 1 * Math.pow(10, 4),
         maxHeight : 2500,
-        texture : 'model/skyNight.jpg',
+        texture : 'model/skyNight_2.jpg',
         subDiv : 4
     }
 
@@ -117,6 +118,8 @@ draw.prototype.init = function(){
     this.createPlane();
 
     this.createSky();
+
+    this.createParticles();
 
     this.geometry = this.loadModel("model/tree_morphed.json");
 
@@ -368,7 +371,29 @@ draw.prototype.createSky = function() {
     this.sky.position.z = -13000;
     this.sky.material.needsUpdate = true;
     this.scene.add(this.sky);
-}
+};
+
+draw.prototype.createParticles = function() {
+
+    // this.particlesGeometry = new THREE.Geometry();
+
+    // for (var i = 0; i < this.nbrParticles; i++) {
+
+    //     var v = new THREE.Vector3();
+    //     v.x = 0;
+    //     v.y = 0;
+    //     v.z = 0;
+
+    //     // add the vertex
+    //     geometry.vertices.push(v);
+
+    //     pSize.push(Math.random());
+    //     pPos.push(Math.random());
+        
+    // }
+
+
+};
 
 
 draw.prototype.consoleBitch = function(event) {
