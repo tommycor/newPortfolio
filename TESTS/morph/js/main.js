@@ -21,7 +21,7 @@ var draw = function() {
 	this.mouseout = false;
 	this.reduceSpeed = 7;
 
-	this.nbrParticles = 500;
+	this.nbrParticles = 1000;
 
 
 	this.planeMeasurement = {
@@ -139,7 +139,7 @@ draw.prototype.render = function() {
 	this.renderer.render(this.scene, this.camera);
 
 	this.uniforms.time.value ++;
-	// this.particlesUniforms['time'].value ++;
+	this.particlesUniforms['time'].value ++;
 
 	if ( this.mouseout === true ){
 		this.uniforms.mouse.value.x -= this.reduceSpeed;
@@ -378,7 +378,7 @@ draw.prototype.createParticles = function() {
 
 		var v = new THREE.Vector3();
 		v.x = Math.random() * 10000;
-		v.y = Math.random() * 100;
+		v.y = Math.random() * 200;
 		v.z = Math.random() * 10000;
 
 		// add the vertex
@@ -395,17 +395,17 @@ draw.prototype.createParticles = function() {
 		pSize: {type: 'f', value: this.pSize}
 	};
 
+	var basicShaderUniforms = {
+		time: {type: 'f', value: 0.0},
+	};
+
 	var basicShader = THREE.ShaderLib['particle_basic'];
-	this.particlesUniforms = THREE.UniformsUtils.merge([basicShader.uniforms]);
-	this.particlesUniforms['map'].value = THREE.ImageUtils.loadTexture("model/ps_smoke_2.png");
+	this.particlesUniforms = THREE.UniformsUtils.merge([basicShader.uniforms, basicShaderUniforms]);
+	this.particlesUniforms['map'].value = THREE.ImageUtils.loadTexture("model/ps_smoke_3.png");
 	this.particlesUniforms['size'].value = 100;
 	this.particlesUniforms['opacity'].value = 0.5;
 	this.particlesUniforms['psColor'].value = new THREE.Color(0xffffff);
-	// this.particlesUniforms['time'].value = 0;
 
-	// this.particlesUniforms = {
-	//     planeWidth: {type: 'f', value: this.planeMeasurement.width},
-	// };
 
 
 	this.particlcesMaterial = new THREE.ShaderMaterial({

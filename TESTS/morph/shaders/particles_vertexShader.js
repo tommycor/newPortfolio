@@ -11,11 +11,13 @@ var particles_vertexShader = [
 
 		'void main() {',
 
-		// '   vec3 newPosition = pnoise( position + 0.005 * time, vec3( 1.0 ) );',
+		'	float displacement = 100. * pnoise( position + 0.005 * time, vec3( 1.0 ) );',
 
-		'   vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );',
+		'	vec3 newPosition = vec3( position.x + displacement, position.y, position.z);',
 
-		'   gl_PointSize = 2.0 * pSize * size * ( scale / length( mvPosition.xyz ) );',
+		'	vec4 mvPosition = modelViewMatrix * vec4( newPosition, 1.0 );',
+
+		'	gl_PointSize = 2.0 * pSize * size * ( scale / length( mvPosition.xyz ) );',
 
 		'	gl_Position = projectionMatrix * mvPosition;',
 
