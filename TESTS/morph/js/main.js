@@ -11,6 +11,8 @@ window.onload = function() {
 
 var draw = function() {
 
+	this.container = document.getElementById('exp');
+
 	this.render = this.render.bind(this);
 	this.handleResize = this.handleResize.bind(this);
 	this.update = this.update.bind(this);
@@ -21,7 +23,10 @@ var draw = function() {
 	this.mouseout = false;
 	this.reduceSpeed = 7;
 
-	this.nbrParticles = 400;
+	this.nbrParticles = 400 + Math.random() * 500;
+
+	this.mouvCamWidth = 100;
+	this.mouvCamHeight = 50;
 
 
 	this.planeMeasurement = {
@@ -29,13 +34,13 @@ var draw = function() {
 		depth : 1 * Math.pow(10, 4),
 		maxHeight : 300,
 		subDiv : 30
-	}
+	};
 	this.mountainMeasurement = {
 		width : 2.5 * Math.pow(10, 4),
 		depth : 5 * Math.pow(10, 3),
 		maxHeight : 2500,
 		subDiv : 10
-	}
+	};
 
 	this.skyMeasurement = {
 		width : 3 * Math.pow(10, 4),
@@ -43,7 +48,7 @@ var draw = function() {
 		maxHeight : 2500,
 		texture : 'model/skyNight_2.jpg',
 		subDiv : 4
-	}
+	};
 
 	this.lookAtPosition = new THREE.Vector3(0, 100, 0);
 
@@ -51,8 +56,6 @@ var draw = function() {
 };
 
 draw.prototype.init = function(){
-
-	this.container = document.getElementById('exp');
 	// this.container = document;
 
 	//// INIT
@@ -71,34 +74,6 @@ draw.prototype.init = function(){
 	this.camera.position.y = -140;
 	this.camera.position.z = 2300;
 	this.camera.lookAt( this.lookAtPosition );
-
-	// this.orbit = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-
-	// add spotlight for the shadows
-	// this.spotLight = new THREE.SpotLight(0xffffff, 10);
-	// this.spotLight.distance = 20000;
-	// this.spotLight.exponent = 0.1;
-	// this.spotLight.angle = Math.PI/4;
-	// this.spotLight.onlyShadow = true;
-	// this.spotLight.position.set(0, 0, 3000);
-	// this.spotLight.castShadow = true;
-	// this.spotLight.shadowCameraNear = 50;
-	// this.spotLight.shadowCameraFar = 1000;
-	// this.spotLight.shadowDarkness = 1;
-	// this.spotLight.target.position.set( 0, -2000, -10000 );
-	// this.spotLight.target.updateMatrixWorld();
-	// this.scene.add( this.spotLight );
-	// this.scene.add( this.spotLight.target );
-
-	// this.directionalLight = new THREE.DirectionalLight( 0xffffff, 5 );
-	// this.directionalLight.castShadow = true;
-	// this.directionalLight.position.set(0, 0, 2000);
-	// this.directionalLight.target.position.set( 0, -1000, -15000 );
-	// this.directionalLight.target.updateMatrixWorld();
-	// this.directionalLight.shadowCameraNear = 500;
-	// this.directionalLight.shadowCameraFar = 10000;
-	// this.scene.add( this.directionalLight );
-	// this.scene.add( this.directionalLight.target );
 
 	this.receptorGeometry = new THREE.PlaneGeometry(3000, 3000);
 	this.receptorMaterial = new THREE.MeshBasicMaterial({ 
@@ -153,16 +128,30 @@ draw.prototype.render = function() {
 };
 
 draw.prototype.update = function(event) {
-	var mouse = getPosition2D(event, this.receptor, this.camera);
+
+	this.camera.position.x = (event.offsetX - this.dividedWidth) * this.rapportWidth ;
+	this.camera.position.y = -140 + (this.dividedHeight - event.offsetY) * this.rapportHeight ;
+	this.camera.lookAt(this.lookAtPosition);
+
+	// var mouse = getPosition2D(event, this.receptor, this.camera);
+
+	var mouse = {
+		x: event.offsetX - this.dividedWidth,
+		y: this.dividedHeight - event.offsetY,
+	};
+	console.log(mouse);
 
 	if (typeof mouse !== 'undefined') {
 		mouse.y += 400;
 		this.uniforms.mouse.value = new THREE.Vector3( mouse.x, mouse.y, mouse.z );
+		// this.uniforms.mouse.value = new THREE.Vector3( mouse.x, mouse.y, mouse.z );
 		this.mouseout = false;
 	}
 	else {
 		this.mouseout = true;
 	}
+
+
 };
 
 
@@ -212,12 +201,6 @@ draw.prototype.addStatsObject = function() {
 	document.body.appendChild(this.stats.domElement);
 };
 
-draw.prototype.handleResize = function() {
-	this.camera.aspect = window.innerWidth / window.innerHeight;
-	this.camera.updateProjectionMatrix();
-	this.renderer.setSize(window.innerWidth, window.innerHeight);
-};
-
 draw.prototype.loadModel = function(url) {
 	this.loader = new THREE.JSONLoader();
 	this.loader.load( url, this.plop);
@@ -265,6 +248,8 @@ draw.prototype.plop = function(geometry) {
 	window.addEventListener('mousemove', this.update, false);
 
 	this.render();
+	this.renderer.render(this.scene, this.camera);
+	this.setSize();
 };
 
 draw.prototype.animIntro = function() {
@@ -274,11 +259,11 @@ draw.prototype.animIntro = function() {
 	var start = {
 		Influence0 : _this.mesh.morphTargetInfluences[0],
 		Influence1 : _this.mesh.morphTargetInfluences[1]
-	}
+	};
 	var end = {
 		Influence0 : 0,
 		Influence1 : 0
-	}
+	};
 
 	var tween1 = new TWEEN.Tween(start)
 			.to(end, 5000)
@@ -431,6 +416,25 @@ draw.prototype.createParticles = function() {
 };
 
 
+draw.prototype.setSize = function() {
+
+	
+	this.dividedWidth = this.container.offsetWidth / 2;
+	this.rapportWidth = this.mouvCamWidth / this.dividedWidth;
+
+	
+	this.dividedHeight = this.container.offsetHeight / 2;
+	this.rapportHeight = this.mouvCamHeight / this.dividedHeight;
+};
+
 draw.prototype.consoleBitch = function(event) {
 	this.sky.material.needsUpdate = true;
+};
+
+draw.prototype.handleResize = function() {
+	this.camera.aspect = window.innerWidth / window.innerHeight;
+	this.camera.updateProjectionMatrix();
+	this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+	this.setSize();
 };
