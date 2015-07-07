@@ -21,7 +21,7 @@ var draw = function() {
 	this.mouseout = false;
 	this.reduceSpeed = 7;
 
-	this.nbrParticles = 1000;
+	this.nbrParticles = 400;
 
 
 	this.planeMeasurement = {
