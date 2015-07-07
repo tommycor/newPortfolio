@@ -22,10 +22,12 @@ var draw = function() {
 
 	this.mouseout = false;
 	this.reduceSpeed = 7;
+	this.camY = -140;
 
 	this.nbrParticles = 400 + Math.random() * 500;
+	this.ratio = window.innerWidth / window.innerHeight;
 
-	this.mouvCamWidth = 100;
+	this.mouvCamWidth = 50;
 	this.mouvCamHeight = 50;
 
 
@@ -43,8 +45,8 @@ var draw = function() {
 	};
 
 	this.skyMeasurement = {
-		width : 3 * Math.pow(10, 4),
-		depth : 1 * Math.pow(10, 4),
+		width : 3.2 * Math.pow(10, 4),
+		depth : 1.5 * Math.pow(10, 4),
 		maxHeight : 2500,
 		texture : 'model/skyNight_2.jpg',
 		subDiv : 4
@@ -60,7 +62,7 @@ draw.prototype.init = function(){
 
 	//// INIT
 	this.scene = new THREE.Scene();
-	this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
+	this.camera = new THREE.PerspectiveCamera(45, this.ratio, 0.1, 20000);
 	// this.camera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 10000);
 
 	////RENDERER
@@ -71,7 +73,7 @@ draw.prototype.init = function(){
 
 	// position and point the camera to the center of the scene
 	this.camera.position.x = 0;
-	this.camera.position.y = -140;
+	this.camera.position.y = this.camY;
 	this.camera.position.z = 2300;
 	this.camera.lookAt( this.lookAtPosition );
 
@@ -129,17 +131,23 @@ draw.prototype.render = function() {
 
 draw.prototype.update = function(event) {
 
-	this.camera.position.x = (event.offsetX - this.dividedWidth) * this.rapportWidth ;
-	this.camera.position.y = -140 + (this.dividedHeight - event.offsetY) * this.rapportHeight ;
-	this.camera.lookAt(this.lookAtPosition);
-
 	// var mouse = getPosition2D(event, this.receptor, this.camera);
 
+	// var mouse = {
+	// 	x: event.offsetX - this.dividedWidth * ( 1 / window.innerWidth, window.innerHeight ),
+	// 	y: this.dividedHeight - event.offsetY  * ( 1 / window.innerWidth, window.innerHeight )
+	// };
+
+	
+
 	var mouse = {
-		x: event.offsetX - this.dividedWidth,
-		y: this.dividedHeight - event.offsetY,
+		x: (event.offsetX - this.dividedWidth) * this.ratio,
+		y: (this.dividedHeight - event.offsetY) * this.ratio
 	};
-	console.log(mouse);
+
+	this.camera.position.x = mouse.x * this.rapportWidth ;
+	this.camera.position.y = this.camY + mouse.y * this.rapportHeight ;
+	this.camera.lookAt(this.lookAtPosition);
 
 	if (typeof mouse !== 'undefined') {
 		mouse.y += 400;
@@ -164,7 +172,7 @@ draw.prototype.addControlGui = function(controlObject) {
 		this.mt_0 = 0.7;
 		this.mt_1 = 0.7;
 		this.X = 0;
-		this.Y = -140;
+		this.Y = _this.camY;
 		this.Z = 2300;
 	};
 
@@ -428,11 +436,13 @@ draw.prototype.setSize = function() {
 };
 
 draw.prototype.consoleBitch = function(event) {
-	this.sky.material.needsUpdate = true;
+	console.log(window.innerWidth / window.innerHeight);
 };
 
-draw.prototype.handleResize = function() {
-	this.camera.aspect = window.innerWidth / window.innerHeight;
+draw.prototype.handleResize = function() {	
+	this.ratio = window.innerWidth / window.innerHeight;
+
+	this.camera.aspect = this.ratio;
 	this.camera.updateProjectionMatrix();
 	this.renderer.setSize(window.innerWidth, window.innerHeight);
 
