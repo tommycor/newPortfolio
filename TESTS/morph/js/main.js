@@ -24,7 +24,8 @@ var draw = function() {
 	this.reduceSpeed = 7;
 	this.camY = -140;
 
-	this.nbrParticles = 400 + Math.random() * 500;
+	this.nbrParticles = 1000 + Math.random() * 500;
+
 	this.ratio = window.innerWidth / window.innerHeight;
 
 	this.mouvCamWidth = 50;
@@ -46,10 +47,14 @@ var draw = function() {
 
 	this.skyMeasurement = {
 		width : 3.2 * Math.pow(10, 4),
-		depth : 1.5 * Math.pow(10, 4),
+		depth : 2 * Math.pow(10, 4),
 		maxHeight : 2500,
 		texture : 'model/skyNight_2.jpg',
 		subDiv : 4
+	};
+	this.skyPosition = {
+		y: 5000,
+		z: -13000
 	};
 
 	this.lookAtPosition = new THREE.Vector3(0, 100, 0);
@@ -120,7 +125,7 @@ draw.prototype.render = function() {
 
 	if ( this.mouseout === true ){
 		this.uniforms.mouse.value.x -= this.reduceSpeed;
-		this.uniforms.mouse.value.y -= this.reduceSpeed;
+		this.uniforms.mouse.y.value -= this.reduceSpeed;
 		this.uniforms.mouse.value.z -= this.reduceSpeed;
 	}
 
@@ -131,23 +136,17 @@ draw.prototype.render = function() {
 
 draw.prototype.update = function(event) {
 
-	// var mouse = getPosition2D(event, this.receptor, this.camera);
-
-	// var mouse = {
-	// 	x: event.offsetX - this.dividedWidth * ( 1 / window.innerWidth, window.innerHeight ),
-	// 	y: this.dividedHeight - event.offsetY  * ( 1 / window.innerWidth, window.innerHeight )
-	// };
-
-	
-
 	var mouse = {
-		x: (event.offsetX - this.dividedWidth) * this.ratio,
-		y: (this.dividedHeight - event.offsetY) * this.ratio
+		x: (event.clientX - this.dividedWidth) * this.ratio,
+		y: (this.dividedHeight - event.clientY) * this.ratio
 	};
 
 	this.camera.position.x = mouse.x * this.rapportWidth ;
 	this.camera.position.y = this.camY + mouse.y * this.rapportHeight ;
 	this.camera.lookAt(this.lookAtPosition);
+
+	this.sky.position.x = mouse.x * 0.3;
+	this.sky.position.y = this.skyPosition.y + mouse.y * 0.3;
 
 	if (typeof mouse !== 'undefined') {
 		mouse.y += 400;
@@ -158,8 +157,6 @@ draw.prototype.update = function(event) {
 	else {
 		this.mouseout = true;
 	}
-
-
 };
 
 
@@ -356,8 +353,8 @@ draw.prototype.createSky = function() {
 	this.sky.name = "sky"
 	this.sky.receiveShadow = true;
 	this.sky.castShadow = true;
-	this.sky.position.y = 5000;
-	this.sky.position.z = -13000;
+	this.sky.position.y = this.skyPosition.y;
+	this.sky.position.z = this.skyPosition.z;
 	this.sky.material.needsUpdate = true;
 	this.scene.add(this.sky);
 };

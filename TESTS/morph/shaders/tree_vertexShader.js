@@ -29,7 +29,7 @@ var tree_vertexShader = [
 
         '    vNormal = normal;',
 
-        '    vec3 fakePosition = position * vec3(1, 1, 0);',
+        '    vec3 fakePosition = morphed * vec3(1, 1, 0);',
 
         '    float distance = distance(mouse, fakePosition);',
 

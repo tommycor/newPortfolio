@@ -11,7 +11,7 @@ var particles_vertexShader = [
 
 		'void main() {',
 
-		'	vec2 displacement = vec2(   100. * pnoise( position + 0.005 * time, vec3( 1.0 ) ) ,   50. * pnoise( 30. + position + 0.005 * time, vec3( 3.0 ) )   );',
+		'	vec2 displacement = vec2(   100. * pnoise( position + 0.005 * time, vec3( 1.0 ) ) ,   100. * pnoise( 30. + position + 0.005 * time, vec3( 3.0 ) )   );',
 
 
 		'	vec3 newPosition = vec3( position.x + displacement.x, position.y + displacement.y, position.z);',
