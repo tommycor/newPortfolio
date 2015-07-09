@@ -83,12 +83,12 @@ draw.prototype.init = function(){
 	this.camera.lookAt( this.lookAtPosition );
 
 	this.receptorGeometry = new THREE.PlaneGeometry(3000, 3000);
-	this.receptorMaterial = new THREE.MeshBasicMaterial({ 
+	this.receptorMaterial = new THREE.MeshBasicMaterial({
 		visible : false
 		// color: 'grey',
 		// transparent: true,
 		// opacity: 0.5
-	})
+	});
 	this.receptor = new THREE.Mesh(this.receptorGeometry, this.receptorMaterial);
 	this.receptor.y = -100;
 	this.receptor.name = 'receptor';
@@ -117,7 +117,7 @@ draw.prototype.init = function(){
 draw.prototype.render = function() {
 	// this.orbit.update();
 
-	this.stats.update();
+	// this.stats.update();
 	this.renderer.render(this.scene, this.camera);
 
 	this.uniforms.time.value ++;
@@ -163,47 +163,47 @@ draw.prototype.update = function(event) {
 
 draw.prototype.addControlGui = function(controlObject) {
 
-	var _this = this;
+	// var _this = this;
 
-	this.control = new function () {
-		this.mt_0 = 0.7;
-		this.mt_1 = 0.7;
-		this.X = 0;
-		this.Y = _this.camY;
-		this.Z = 2300;
-	};
+	// this.control = new function () {
+	//	this.mt_0 = 0.7;
+	//	this.mt_1 = 0.7;
+	//	this.X = 0;
+	//	this.Y = _this.camY;
+	//	this.Z = 2300;
+	//};
 
-	var gui = new dat.GUI();
+	//var gui = new dat.GUI();
 
-	gui.add(this.control, 'mt_0', 0, 1).step(0.01).listen().onChange(function (a) {
-		_this.mesh.morphTargetInfluences[0] = a;
-	});
-	gui.add(this.control, 'mt_1', 0, 1).step(0.01).listen().onChange(function (a) {
-		_this.mesh.morphTargetInfluences[1] = a;
-	});
-	gui.add(this.control, 'X', -200, 200).step(10).listen().onChange(function (a) {
-		_this.camera.position.x = a;
-		_this.camera.lookAt( _this.lookAtPosition );
-	});
-	gui.add(this.control, 'Y', -3000, 10000).step(10).listen().onChange(function (a) {
-		_this.camera.position.y = a;
-		_this.camera.lookAt( _this.lookAtPosition );
-	});
-	gui.add(this.control, 'Z', -3000, 10000).step(10).listen().onChange(function (a) {
-		_this.camera.position.z = a;
-		_this.camera.lookAt( _this.lookAtPosition );
-	});
+	//gui.add(this.control, 'mt_0', 0, 1).step(0.01).listen().onChange(function (a) {
+	//	_this.mesh.morphTargetInfluences[0] = a;
+	//});
+	//gui.add(this.control, 'mt_1', 0, 1).step(0.01).listen().onChange(function (a) {
+	//	_this.mesh.morphTargetInfluences[1] = a;
+	//});
+	//gui.add(this.control, 'X', -200, 200).step(10).listen().onChange(function (a) {
+	//	_this.camera.position.x = a;
+	//	_this.camera.lookAt( _this.lookAtPosition );
+	//});
+	//gui.add(this.control, 'Y', -3000, 10000).step(10).listen().onChange(function (a) {
+	//	_this.camera.position.y = a;
+	//	_this.camera.lookAt( _this.lookAtPosition );
+	//});
+	//gui.add(this.control, 'Z', -3000, 10000).step(10).listen().onChange(function (a) {
+	//	_this.camera.position.z = a;
+	//	_this.camera.lookAt( _this.lookAtPosition );
+	//});
 };
 
 draw.prototype.addStatsObject = function() {
-	this.stats = new Stats();
-	this.stats.setMode(0);
+	// this.stats = new Stats();
+	// this.stats.setMode(0);
 
-	this.stats.domElement.style.position = 'absolute';
-	this.stats.domElement.style.left = '0px';
-	this.stats.domElement.style.top = '0px';
+	// this.stats.domElement.style.position = 'absolute';
+	// this.stats.domElement.style.left = '0px';
+	// this.stats.domElement.style.top = '0px';
 
-	document.body.appendChild(this.stats.domElement);
+	// document.body.appendChild(this.stats.domElement);
 };
 
 draw.prototype.loadModel = function(url) {
