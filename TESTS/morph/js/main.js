@@ -151,7 +151,6 @@ draw.prototype.update = function(event) {
 	if (typeof mouse !== 'undefined') {
 		mouse.y += 400;
 		this.uniforms.mouse.value = new THREE.Vector3( mouse.x, mouse.y, mouse.z );
-		// this.uniforms.mouse.value = new THREE.Vector3( mouse.x, mouse.y, mouse.z );
 		this.mouseout = false;
 	}
 	else {
