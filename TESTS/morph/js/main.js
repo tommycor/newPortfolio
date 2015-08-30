@@ -4,12 +4,11 @@ window.onload = function() {
 	window.addEventListener('click', abtract.consoleBitch, false);
 
 	window.addEventListener('resize', abtract.handleResize, false);
-
-
-	// requestAnimationFrame(abtract.render);
 };
 
 var draw = function() {
+
+	this.addLoader();
 
 	this.container = document.getElementById('exp');
 
@@ -18,7 +17,7 @@ var draw = function() {
 	this.update = this.update.bind(this);
 	this.consoleBitch = this.consoleBitch.bind(this);
 	this.loadModel = this.loadModel.bind(this);
-	this.plop = this.plop.bind(this);
+	this.loadedModel = this.loadedModel.bind(this);
 
 	this.mouseout = false;
 	this.reduceSpeed = 7;
@@ -206,12 +205,14 @@ draw.prototype.addStatsObject = function() {
 };
 
 draw.prototype.loadModel = function(url) {
+
 	this.loader = new THREE.JSONLoader();
-	this.loader.load( url, this.plop);
+	this.loader.load( url, this.loadedModel);
+
 };
 
 
-draw.prototype.plop = function(geometry) {
+draw.prototype.loadedModel = function(geometry) {
 
 	this.geometry = geometry;
 
@@ -247,6 +248,8 @@ draw.prototype.plop = function(geometry) {
 	this.mesh.castShadow = true;
 	this.scene.add(this.mesh);
 
+	this.removeLoader();
+
 	this.animIntro();
 
 	window.addEventListener('mousemove', this.update, false);
@@ -278,7 +281,7 @@ draw.prototype.animIntro = function() {
 			.easing(TWEEN.Easing.Quadratic.InOut)
 			.start();
 
-}
+};
 
 draw.prototype.createPlane = function() {
 
@@ -328,7 +331,7 @@ draw.prototype.createPlane = function() {
 		fragmentShader: mountain_fragmentShader
 	});
 
-	this.mountain = new THREE.Mesh(this.mountainGeometry, this.mountainMaterial)
+	this.mountain = new THREE.Mesh(this.mountainGeometry, this.mountainMaterial);
 	this.mountain.name = "mountain";
 	this.mountain.rotation.x = -Math.PI/2;
 	this.mountain.position.z = -9000;
@@ -348,8 +351,8 @@ draw.prototype.createSky = function() {
 		side:THREE.DoubleSide
 	});
 
-	this.sky = new THREE.Mesh(this.skyGeometry, this.skyMaterial)
-	this.sky.name = "sky"
+	this.sky = new THREE.Mesh(this.skyGeometry, this.skyMaterial);
+	this.sky.name = "sky";
 	this.sky.receiveShadow = true;
 	this.sky.castShadow = true;
 	this.sky.position.y = this.skyPosition.y;
@@ -435,7 +438,7 @@ draw.prototype.consoleBitch = function(event) {
 	console.log(window.innerWidth / window.innerHeight);
 };
 
-draw.prototype.handleResize = function() {	
+draw.prototype.handleResize = function() {
 	this.ratio = window.innerWidth / window.innerHeight;
 
 	this.camera.aspect = this.ratio;
@@ -443,4 +446,19 @@ draw.prototype.handleResize = function() {
 	this.renderer.setSize(window.innerWidth, window.innerHeight);
 
 	this.setSize();
+};
+
+draw.prototype.addLoader = function() {
+
+	this.loadingPage = document.getElementById('loader');
+	// this.loadingPage.originalClass = this.loadingPage.className;
+
+	// this.loadingPage.className += ' active';
+
+};
+
+draw.prototype.removeLoader = function() {
+
+	this.loadingPage.className = 'exp_loader';
+
 };

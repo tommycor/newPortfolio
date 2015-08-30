@@ -18,6 +18,33 @@
         canvas{
             cursor: pointer;
         }
+        .exp_loader{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background-color: black;
+            opacity: 0;
+            transition: opactiy 1s;
+            -webkit-transition: opacity 1s;
+            -moz-transition: opacity 1s;
+            --moz-transition: opacity 1s;
+        }
+        .exp_loader.active{
+            opacity: 1;
+        }
+        .exp_progress{
+            position: absolute;
+            top: 50%;
+            font-family: verdana;
+            font-size: 25px;
+            left: 50%;
+            color: white;
+            transform: translate(-50%, -100%);
+            -webkit-transform: translate(-50%, -100%);
+            -moz-transform: translate(-50%, -100%);
+            -o-transform: translate(-50%, -100%);
+        }
     </style>
     <script src="libs/three.js"></script>
     <script src="libs/dat.gui.min.js"></script>
@@ -38,7 +65,10 @@
 
 
 <body>
-    <div id="exp">        
+    <div id="exp">
+        <div id="loader" class="exp_loader active">
+            <p class="exp_progress">Loading...</p>
+        </div>   
     </div>
 </body>
 </html>
