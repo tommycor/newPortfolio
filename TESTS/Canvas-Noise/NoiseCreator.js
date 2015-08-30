@@ -1,5 +1,5 @@
 window.onload = function() {
-	var noise = new Noise(50, 200, 3);
+	var noise = new Noise(30, 240, 2, 260);
 
 	window.addEventListener('resize', noise.handleResize, false);
 
@@ -7,10 +7,11 @@ window.onload = function() {
 };
 
 
-var Noise = function (variation, color, step) {
+var Noise = function (variation, color, step, maxColor) {
 	this.variation = variation;
 	this.color = color;
 	this.step = step;
+	this.maxColor = maxColor;
 
 	this.handleResize = this.handleResize.bind(this);
 	this.mouseMouve = this.mouseMouve.bind(this);
@@ -26,33 +27,23 @@ var Noise = function (variation, color, step) {
 	this.canvas.width = this.canvasSizeX;
 	this.canvas.height = this.canvasSizeY;
 
-	this.maxDist = 500;
+	this.maxDist = 700000;
+	this.originalCanvasData = [];
 
 
 	this.canvasData = this.context.getImageData(0, 0, this.canvasSizeX, this.canvasSizeY);
 
 
-	this.create();
+	this.init();
 };
 
-Noise.prototype.create = function() {
+Noise.prototype.init = function() {
 
 	var current;
 	var variable;
-
-	// console.log(this.canvasSizeX * this.canvasSizeY)
-
-	// for( i = 0 ; i < this.canvas.width * this.canvas.height * 4 ; i += 4 * this.step ) {
-	// 	variable = this.color + ( ( Math.random() * this.variation ) - (this.variation / 2 ) ) ;
-
-	// 	this.canvasData.data[i + 0] = this.canvasData.data[i + 1] = this.canvasData.data[i + 2] = variable;
-
-	// 	this.canvasData.data[i + 3] = 255;
-	// }
-
 	
-	for( y = 0 ; y < this.canvas.height ; y += this.step ) {
-		for( x = 0 ; x < this.canvas.width ; x += this.step ) {
+	for( y = 0 ; y < this.canvas.height ; y += 1 ) {
+		for( x = 0 ; x < this.canvas.width ; x += 1 ) {
 
 			variable = this.color + ( ( Math.random() * this.variation ) - (this.variation / 2 ) ) ;
 
@@ -61,10 +52,10 @@ Noise.prototype.create = function() {
 			this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = variable;
 
 			this.canvasData.data[current + 3] = 255;
+
+			this.originalCanvasData[current] = variable;
 		}
 	}
-
-	this.primaryCanvasData = this.canvasData.data;
 
 	this.update();
 
@@ -75,8 +66,11 @@ Noise.prototype.update = function() {
 };
 
 Noise.prototype.mouseMouve = function(event) {
+
 	var current;
 	var dist;
+	console.log('movin')
+
 	
 	for( y = 0 ; y < this.canvas.height ; y += this.step ) {
 		for( x = 0 ; x < this.canvas.width ; x += this.step ) {
@@ -87,18 +81,14 @@ Noise.prototype.mouseMouve = function(event) {
 
 			if( dist < this.maxDist ){
 
-				this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = 2;
+				this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = this.maxColor - ( ( this.maxColor - this.originalCanvasData[current] ) / this.maxDist ) * dist;
 
 			}
 			else{
 
-				this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = this.primaryCanvasData[current];
+				this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = this.originalCanvasData[current];
 
 			}
-
-			// this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = 2;
-
-			// this.canvasData.data[current + 3] = 255;
 		}
 	}
 
@@ -116,11 +106,11 @@ Noise.prototype.handleResize = function() {
 
 	this.canvasData = this.context.getImageData(0, 0, this.canvasSizeX, this.canvasSizeY);
 
-	this.create();
+	this.init();
 };
 
 function distEvent( event, x, y ) {
-	var event = {
+	event = {
 		x: event.clientX,
 		y: event.clientY
 	};
