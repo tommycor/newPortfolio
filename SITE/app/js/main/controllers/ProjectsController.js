@@ -1,10 +1,8 @@
 'use strict';
 
-/* Controllers */
+/* projectsController */
 
-var angular = angular;
-
-angular.module('main').controller('ProjectController', ['$scope', '$location', function($scope, $location) {
+var projectsController = function($scope, $location) {
 	function start() {
 		console.log($scope);
 		console.log($location);
@@ -15,4 +13,6 @@ angular.module('main').controller('ProjectController', ['$scope', '$location', f
 	};
 
 	init();
-}]);
+};
+
+module.exports = projectsController;

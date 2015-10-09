@@ -1,10 +1,9 @@
 'use strict';
 
-/* Controllers */
+/* singleController */
 
-var angular = angular;
+var singleController = function($scope, $location) {
 
-angular.module('main').controller('SingleController', ['$scope', '$location', function($scope, $location) {
 	function start() {
 		console.log($scope);
 		console.log($location);
@@ -15,4 +14,6 @@ angular.module('main').controller('SingleController', ['$scope', '$location', fu
 	};
 
 	init();
-}]);
+};
+
+module.exports = singleController;

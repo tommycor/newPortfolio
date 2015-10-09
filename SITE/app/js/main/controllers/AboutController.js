@@ -1,10 +1,8 @@
 'use strict';
 
-/* Controllers */
+/* aboutController */
 
-var angular = angular;
-
-angular.module('main').controller('AboutController', ['$scope', '$location', function($scope, $location) {
+var aboutController = function($scope, $location) {
 	function start() {
 		console.log($scope);
 		console.log($location);
@@ -15,4 +13,6 @@ angular.module('main').controller('AboutController', ['$scope', '$location', fun
 	};
 
 	init();
-}]);
+};
+
+module.exports = aboutController;
