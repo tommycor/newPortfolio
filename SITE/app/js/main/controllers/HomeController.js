@@ -2,10 +2,12 @@
 
 /* homeController */
 
+
 var homeController = function($scope, $location) {
+
 	function start() {
-		console.log($scope);
-		console.log($location);
+		console.log('home');
+		// AboutController.start();
 	}
 
 	var init = function() {

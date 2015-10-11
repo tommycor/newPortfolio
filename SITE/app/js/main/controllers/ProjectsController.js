@@ -3,9 +3,9 @@
 /* projectsController */
 
 var projectsController = function($scope, $location) {
+
 	function start() {
-		console.log($scope);
-		console.log($location);
+		console.log('Projects');
 	}
 
 	var init = function() {

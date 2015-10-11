@@ -3,9 +3,9 @@
 /* aboutController */
 
 var aboutController = function($scope, $location) {
+
 	function start() {
-		console.log($scope);
-		console.log($location);
+		console.log('About');
 	}
 
 	var init = function() {

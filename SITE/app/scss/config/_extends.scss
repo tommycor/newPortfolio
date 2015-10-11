@@ -1,0 +1,36 @@
+%clearfix {
+	&:before,
+	&:after {
+		content: "";
+		display: table;
+	}
+
+	&:after {
+		clear: both;
+	}
+}
+
+%vertical-center {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+%horizontal-center {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+}
+
+%horizontal-center-relative {
+	position: relative;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.horizontal-vertical-center{
+	@extend %vertical-center;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+}

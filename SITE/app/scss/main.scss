@@ -2,4 +2,7 @@
 
 @import "base/normalize", "base/general";
 
-@import "modules/test.scss";
+@import "config/colors", "config/extends", "config/fonts", "config/mixins", "config/sizes";
+
+@import "modules/exp.scss",
+		"modules/titles";

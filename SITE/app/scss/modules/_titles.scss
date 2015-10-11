@@ -1,0 +1,38 @@
+.mainTitle {
+	@extend %horizontal-center;
+
+	width: 420px;
+	z-index: 1;
+
+	&__h1 {
+		color: white;
+		font-family: $font_size_h1;
+		font-size: $font_family_h1;
+		font-weight: $font_weight_h1;
+		font-style: $font_style_h1;
+		text-transform: uppercase;
+		margin-bottom: 0px;
+	}
+	&__h2 {
+		color: $gold;
+		font-family: $font_size_h2;
+		font-size: $font_family_h2;
+		font-weight: $font_weight_h2;
+		font-style: $font_style_h2;
+		margin: 0px;
+	}
+	&__net {
+		height: 1px;
+		width: 70px;
+		position: absolute;
+		background-color: $gold;
+		bottom: 29px;
+
+		&--left {
+			left: 0px;
+		}
+		&--right {
+			right: 0px;
+		}
+	}
+}

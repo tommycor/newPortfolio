@@ -1,0 +1,22 @@
+$ipad : 1024px;
+$smallDesktop : 1400px;
+$wide : 1800px;
+$extraWide: 2300px;
+
+@mixin respondTo($media){
+    @if $media == extraWide {
+        @media(min-width: $extraWide + 1){ @content; }
+    }
+    @if $media == wide {
+        @media(min-width: $wide + 1){ @content; }
+    }
+    @if $media == desktop {
+        @media(max-width: $wide){ @content; }
+    }
+    @if $media == smallDesktop {
+        @media(max-width: $smallDesktop){ @content; }
+    }
+    @if $media == ipad {
+        @media(max-width: $ipad){ @content; }
+    }
+}
