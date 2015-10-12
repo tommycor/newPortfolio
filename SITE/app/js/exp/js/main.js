@@ -8,8 +8,6 @@ window.onload = function() {
 
 var draw = function() {
 
-	this.addLoader();
-
 	this.container = document.getElementById('exp');
 
 	this.render = this.render.bind(this);
@@ -48,7 +46,7 @@ var draw = function() {
 		width : 3.2 * Math.pow(10, 4),
 		depth : 2 * Math.pow(10, 4),
 		maxHeight : 2500,
-		texture : 'model/skyNight_2.jpg',
+		texture : 'js/exp/model/skyNight_2.jpg',
 		subDiv : 4
 	};
 	this.skyPosition = {
@@ -102,7 +100,7 @@ draw.prototype.init = function(){
 
 	this.createParticles();
 
-	this.geometry = this.loadModel("model/tree_morphed.json");
+	this.geometry = this.loadModel("js/exp/model/tree_morphed.json");
 
 	this.container.appendChild(this.renderer.domElement);
 
@@ -248,8 +246,6 @@ draw.prototype.loadedModel = function(geometry) {
 	this.mesh.castShadow = true;
 	this.scene.add(this.mesh);
 
-	this.removeLoader();
-
 	this.animIntro();
 
 	window.addEventListener('mousemove', this.update, false);
@@ -393,7 +389,7 @@ draw.prototype.createParticles = function() {
 
 	var basicShader = THREE.ShaderLib['particle_basic'];
 	this.particlesUniforms = THREE.UniformsUtils.merge([basicShader.uniforms, basicShaderUniforms]);
-	this.particlesUniforms['map'].value = THREE.ImageUtils.loadTexture("model/ps_smoke_3.png");
+	this.particlesUniforms['map'].value = THREE.ImageUtils.loadTexture("js/exp/model/ps_smoke_3.png");
 	this.particlesUniforms['size'].value = 100;
 	this.particlesUniforms['opacity'].value = 0.5;
 	this.particlesUniforms['psColor'].value = new THREE.Color(0xffffff);
@@ -446,19 +442,4 @@ draw.prototype.handleResize = function() {
 	this.renderer.setSize(window.innerWidth, window.innerHeight);
 
 	this.setSize();
-};
-
-draw.prototype.addLoader = function() {
-
-	this.loadingPage = document.getElementById('loader');
-	// this.loadingPage.originalClass = this.loadingPage.className;
-
-	// this.loadingPage.className += ' active';
-
-};
-
-draw.prototype.removeLoader = function() {
-
-	this.loadingPage.className = 'exp_loader';
-
 };

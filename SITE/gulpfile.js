@@ -30,7 +30,7 @@ var sourcePath = {
 	// js: sourceDirectory + '/js/**/*.js',
 	js: sourceDirectory + '/js/app.js',
 	jsAll: sourceDirectory + '/js/**/*.js',
-	jsLibs: [sourceDirectory + '/libs/angular.min.js', sourceDirectory + '/libs/*.js'],
+	jsLibs: [sourceDirectory + '/libs/angular.min.js', sourceDirectory + '/libs/three.js', sourceDirectory + '/libs/*.js'],
 	other: [ sourceDirectory + '/fonts/**', sourceDirectory + '/img/**', sourceDirectory + '/partials/**', sourceDirectory + '/index.html', sourceDirectory + '/js/exp/**' ]
 };
 var distDirectory = './dist';
