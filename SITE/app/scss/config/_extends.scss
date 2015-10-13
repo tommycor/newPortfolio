@@ -29,7 +29,7 @@
 	text-align: center;
 }
 
-.horizontal-vertical-center{
+%horizontal-vertical-center{
 	@extend %vertical-center;
 	left: 50%;
 	transform: translateX(-50%) translateY(-50%);
