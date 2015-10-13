@@ -102,9 +102,9 @@ gulp.task('copy', function() {
 	return gulp.src(sourcePath.other, {
 		base: sourceDirectory
 	})
-	.pipe(gulp.dest(distPath.other))
-	.pipe(notify('Copy Complete!'));
+	.pipe(gulp.dest(distPath.other));
+	// .pipe(notify('Copy Complete!'));
 });
 
 // Default task
-gulp.task('default', ['css', 'js', 'copy', 'jsLibs']);
+gulp.task('default', ['css', 'js', 'watch', 'jsLibs']);

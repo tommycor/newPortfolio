@@ -1,0 +1,25 @@
+.mosaic{
+	@extend %horizontal-center;
+	top: 150px;
+	width: 1400px;
+	height: 500px;
+	// background-color: grey;
+
+	&__line{
+		@extend %horizontal-center-relative;
+		display: inline-block;
+		padding-right: 40px;
+
+		&__piece {
+			position: relative;
+			width: 95px;
+			height: 115px;
+			float: left;
+
+			&__borders, &__img {
+				@extend %absolute-zero;
+			}
+		}
+	}
+
+}

@@ -1,0 +1,42 @@
+.arrowDown {
+	@extend %horizontal-center;
+	
+	z-index: 1;
+	width: 50px;
+	bottom: 15px;
+	cursor: pointer;
+	opacity: 1;
+	transition: opacity 0.5s;
+
+	&__img {
+		margin-left: 5px;
+		animation-name: arrow;
+		animation-duration: 8s;
+		animation-iteration-count: infinite;
+		animation-timing-function: ease-in-out;
+	}
+	&__text {
+		position: absolute;
+		left: 0;
+		top: -25px;
+		text-transform: uppercase;
+		font-family: "pier";
+		font-weight: 400;
+		font-size: 10px;
+		color: white;
+	}
+}
+.arrowDown:hover {
+	opacity: 0.5;
+}
+
+
+@keyframes arrow {
+	0%		{transform: translateY(0px); opacity: 1;}
+	80%		{transform: translateY(0px); opacity: 1;}
+	87%		{opacity: 1;}
+	90%		{transform: translateY(15px); opacity: 0;}
+	91%		{transform: translateY(-15px); opacity: 0;}
+	98%		{opacity: 1;}
+	100%	{transform: translateY(0px); opacity: 1;}
+}
