@@ -1,29 +1,49 @@
 .mosaic{
 	@extend %horizontal-center;
-	top: 150px;
-	width: 1400px;
-	height: 500px;
+	top: 230px;
+	width: 850px;
+	height: 400px;
 	// background-color: grey;
 
 	&__line {
 		@extend %horizontal-center-relative;
 		display: inline-block;
 		padding-right: 40px;
+		margin-bottom: 30px;
 
 		&__piece {
 			position: relative;
-			width: 95px;
-			height: 115px;
+			width: 190px;
+			height: 164px;
+			margin: 0 -30px 0 -30px;
 			float: left;
 
 			&__title {
-				display: none;
+				opacity: 0;
 				text-align: center;
-				width: 133px;
+				width: 196px;
 				position:absolute;
-				bottom: -8px;
 				left: 0;
+				transition: opacity 0.5s, transform 0.5s;
+				bottom: -15px;
+				transform: translateY(-7px);
 
+				&__net {
+					@extend %horizontal-center;
+
+					height: 2px;
+					width: 25px;
+					background-color: $gold;
+					top: 8px;
+				}
+			}
+
+			&__img{
+				filter: brightness(1);
+				transition: 0.5s filter;
+				width: 190px;
+				height: 168px;
+				transform: translateX(3px);
 			}
 
 			&__borders, &__img {
@@ -35,7 +55,22 @@
 			&.is-on {
 				
 				.mosaic__line__piece__title{
-					display:block;
+					opacity: 1;
+					transform: translateY(0px);
+				}
+				.mosaic__line__piece__img {
+					filter: brightness(0.2);
+				}
+			}
+		}
+		&__piece--inverted {
+
+			&__title {
+				top: -12px;
+				transform: translateY(7px);
+
+				&__net {
+					top: 45px;
 				}
 			}
 		}

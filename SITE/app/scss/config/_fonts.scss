@@ -48,4 +48,14 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "caslon";
+    src: url("../fonts/adobe_caslon_pro_italic-webfont.eot"),    
+         url("../fonts/adobe_caslon_pro_italic-webfont.woff") format("woff"),
+         url("../fonts/adobe_caslon_pro_italic-webfont.ttf") format("truetype"),
+         url("../fonts/adobe_caslon_pro_italic-webfont.svg#heroic_thin") format("svg");
+    font-weight: 400;
+    font-style: italic;
+}
+
 // http://www.fontsquirrel.com/tools/webfont-generator

@@ -12,6 +12,11 @@
 		font-style: $font_style_h1;
 		text-transform: uppercase;
 		margin-bottom: 0px;
+		margin-top: 19px;
+
+		&--black {
+			color: black;
+		}
 	}
 	&__h2 {
 		color: $gold;
@@ -37,23 +42,21 @@
 	}
 }
 
-.mosaic{
+.mosaic__line__piece__title__h4{
+	color: $gold;
+	font-family: $font_family_h4;
+	font-size: $font_size_h4;
+	font-weight: $font_weight_h4;
+	font-style: $font_style_h4;
+	text-transform: uppercase;
+}
 
-	&__line {
-
-		&__piece {
-
-			&__title {
-
-				&__h4 {
-					color: $gold;
-					font-family: $font_family_h4;
-					font-size: $font_size_h4;
-					font-weight: $font_weight_h4;
-					font-style: $font_style_h4;
-					text-transform: uppercase;
-				}
-			}
-		}
-	}
+.h5 {
+	color: $gold;
+	font-family: $font_family_h5;
+	font-size: $font_size_h5;
+	font-weight: $font_weight_h5;
+	font-style: $font_style_h5;
+	text-align: center;
+	margin: 0 auto;
 }
