@@ -85,6 +85,14 @@ gulp.task('jsLibs', function() {
 gulp.task('clean', function(){
 	return gulp.src(distDirectory, {read: false})
 	.pipe(clean());
+
+gulp.task('copy', function() {
+	return gulp.src(sourcePath.other, {
+		base: sourceDirectory
+	})
+	.pipe(gulp.dest(distPath.other));
+	// .pipe(notify('Copy Complete!'));
+});
 });
 
 gulp.task('watch', function() {
@@ -96,14 +104,6 @@ gulp.task('watch', function() {
 	gulp.watch([sourceDirectory + '/**']).on('change', function() {
 		livereload();
 	});
-});
-
-gulp.task('copy', function() {
-	return gulp.src(sourcePath.other, {
-		base: sourceDirectory
-	})
-	.pipe(gulp.dest(distPath.other));
-	// .pipe(notify('Copy Complete!'));
 });
 
 // Default task

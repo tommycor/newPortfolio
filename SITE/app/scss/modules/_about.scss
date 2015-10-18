@@ -5,13 +5,11 @@
 	padding: 18px 0;
 	z-index: 2;
 	position: relative;
-	max-height: 800px;
 
 	&__container{
-		// margin: 18px 0;
 		width: 100%;
+		height: 100%;
 		position: relative;
-		// height: 100%;
 		
 		&__background {
 			@extend %absolute-zero;
@@ -21,11 +19,68 @@
 		}
 
 		&__article {
-			padding: 140px 40px 20px 80px;
+			@extend %vertical-center;
+			transform: translateY(-380px);
 			width: 50%;
-			position: relative;
 			z-index: 1;
+
+			&--left {
+				left: 0;
+				padding: 140px 40px 20px 80px;
+				float: left;
+			}
+			&--right {
+				right: 0;
+				padding: 140px 80px 20px 40px;
+				float: right;
+			}
 		}
 	}
 
+	&__form {
+		
+		&__line {
+			width: 100%;
+			margin: 15px 0;
+			font-family: $font_family_p;
+			font-size: $font_size_p;
+			font-style: $font_style_p;
+			line-height: $font_line-height_p;
+			font-weight: $font_weight_bold;
+
+			&__label, &__input, &__textarea {
+				width: 100%;
+				display: block;
+			}
+			&__input, &__textarea {
+				border: solid 1px #555;
+				font-weight: $font_weight_regular;
+				background-color: rgba(255,255,255,0);
+				transition: background-color 1s, border-color 1s;
+				font-size: 15px;
+				line-height: 23px;
+				padding: 4px 4px 0px;
+			}
+			&__input:focus, &__textarea:focus {
+				border-color: #000;
+				background-color: rgba(255,255,255,1);
+				outline: none;
+			}
+			&__input {
+				height: 30px;
+			}
+			&__textarea {
+				height: 250px;
+			}
+
+			&__submit {
+				// background-color: rgba(255,255,255,0);
+				font-weight:$font_weight_bold;
+ 			}
+			&__submit:hover {
+				background-color: rgba(255,255,255,1);
+				border-color: #000;
+			}
+		}
+	}
 }
