@@ -1,0 +1,48 @@
+$article_height:200px;
+
+.single {
+	height: 100%;
+	width: 100%;
+
+	&__article {
+		height: $article_height;
+		width: 100%;
+		background-color: white;
+		position: absolute;
+		bottom: 0;
+		padding: 10px 0;
+
+		&__titles, &__section {
+			padding: 0 20px;
+		}
+		&__titles {
+			height: 57px;
+			position: relative;
+
+			&__h3, &__technos {
+				width: 50%;
+			}
+
+			&__h3 {
+				float: left;
+			}
+			&__technos {
+				float: right;
+				text-align: right;
+				font-family: "calson";
+				font-size: 24px;
+				color: $gold;
+				font-style: italic;
+				margin-top: 10px;
+			}
+			&::after {
+				height: 1px;
+				width: 100%;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				background-color: $gold;
+			}
+		}
+	}
+}

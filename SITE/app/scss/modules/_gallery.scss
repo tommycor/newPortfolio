@@ -1,0 +1,17 @@
+.single {
+
+	&__gallery {
+		padding-bottom: $article_height;
+		height: 100%;
+
+		&__container {
+			height: 100%;
+			background-color: green;
+
+			&__canvas{
+				height: 100%;
+			}
+		}
+
+	}
+}

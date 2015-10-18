@@ -42,6 +42,16 @@
 	}
 }
 
+.h3 {
+	color: $gold;
+	font-family: $font_family_h3;
+	font-size: $font_size_h3;
+	font-weight: $font_weight_h3;
+	font-style: $font_style_h3;
+	text-transform: uppercase;
+	margin:0
+}
+
 .mosaic__line__piece__title__h4{
 	color: $gold;
 	font-family: $font_family_h4;
