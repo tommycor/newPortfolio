@@ -1,11 +1,10 @@
 @charset "utf-8";
 
-@import "base/normalize", "base/general";
-
 @import "config/colors", "config/extends", "config/fonts", "config/mixins", "config/sizes";
 
+@import "base/normalize", "base/general";
+
 @import "modules/exp.scss",
-		"modules/general.scss",
 		"modules/titles",
 		"modules/arrow",
 		"modules/single",

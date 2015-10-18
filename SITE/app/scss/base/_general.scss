@@ -53,3 +53,14 @@ input[type="search"] {
 :not(input)::selection {
 	text-shadow: none;
 }
+
+
+.main{
+	height: 100%;
+	width: 100%;
+	z-index: 2;
+	position: relative;
+}
+.link {
+	font-weight: $font_weight_bold;
+}
