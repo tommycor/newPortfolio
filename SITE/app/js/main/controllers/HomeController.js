@@ -3,7 +3,7 @@
 /* homeController */
 
 
-var homeController = function($scope, $location) {
+var homeController = function($scope, $location, ScrollManagerService) {
 
 	function start() {
 		console.log('home');

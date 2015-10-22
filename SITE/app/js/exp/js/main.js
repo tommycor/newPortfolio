@@ -1,7 +1,7 @@
 window.onload = function() {
 	var abtract = new draw();
 
-	window.addEventListener('click', abtract.consoleBitch, false);
+	// window.addEventListener('click', abtract.consoleBitch, false);
 
 	window.addEventListener('resize', abtract.handleResize, false);
 };
