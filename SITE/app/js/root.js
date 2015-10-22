@@ -6,6 +6,7 @@
 var rootController = function($scope, $location, $interval, $window, ScrollManagerService, configService) {
 
 	var init = function() {
+		console.log('root');
 		$scope.setConfig();
 		$scope.getPosition();
 	};

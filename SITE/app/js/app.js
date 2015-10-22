@@ -9,7 +9,7 @@ var AboutController = require('./main/controllers/AboutController');
 var configService = require('./main/services/config');
 var ScollManagerService = require('./main/services/scrollManager');
 
-var myApp = angular.module('app', ['ngRoute', 'main']);
+var myApp = angular.module('app', ['ngRoute', 'ngAnimate', 'main']);
 
 myApp.config(function($routeProvider, $locationProvider, $sceDelegateProvider) {
 		$routeProvider.when('/', { templateUrl: 'partials/home.html', controller: 'HomeController' });
