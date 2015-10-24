@@ -12,11 +12,25 @@ var ScollManagerService = require('./main/services/scrollManager');
 var myApp = angular.module('app', ['ngRoute', 'ngAnimate', 'main']);
 
 myApp.config(function($routeProvider, $locationProvider, $sceDelegateProvider) {
-		$routeProvider.when('/', { templateUrl: 'partials/home.html', controller: 'HomeController' });
-		$routeProvider.when('/projects', { templateUrl: 'partials/projects.html', controller: 'ProjectsController' });
-		$routeProvider.when('/projects/:slug', { templateUrl: 'partials/single.html', controller: 'SingleController' });
-		$routeProvider.when('/about', { templateUrl: 'partials/about.html', controller: 'AboutController' });
-		$routeProvider.otherwise({ redirectTo: '/' });
+		$routeProvider.when('/', {
+			templateUrl: 'partials/home.html',
+			controller: 'HomeController'
+		});
+		$routeProvider.when('/projects', {
+			templateUrl: 'partials/projects.html',
+			controller: 'ProjectsController'
+		});
+		$routeProvider.when('/projects/:slug', {
+			templateUrl: 'partials/single.html',
+			controller: 'SingleController'
+		});
+		$routeProvider.when('/about', {
+			templateUrl: 'partials/about.html',
+			controller: 'AboutController'
+		});
+		$routeProvider.otherwise({
+			redirectTo: '/'
+		});
 
 		// $locationProvider.html5Mode(true);
 	});

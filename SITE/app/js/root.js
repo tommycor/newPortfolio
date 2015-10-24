@@ -9,9 +9,11 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 		console.log('root');
 		$scope.setConfig();
 		$scope.getPosition();
+		// $scope.transition = 'up';
 	};
 
 	$scope.goto = function (dest) {
+		$scope.getPosition();
 
 		$scope.$apply(function() {
 			$location.path(dest);
@@ -21,16 +23,21 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 	};
 
 	$scope.mousewheel = function (event) {
-		var delta = event.deltaY;
 		event.preventDefault();
+		
+		var delta = event.deltaY;
 
 		if ( delta > 0 ) {
-			if ( typeof $scope.page.next !== 'undefined' )
+			if ( typeof $scope.page.next !== 'undefined' ) {	
+				$scope.transition = 'up';
 				$scope.goto($scope.page.next.path);
+			}
 		}
 		else {
-			if ( typeof $scope.page.previous !== 'undefined' )
+			if ( typeof $scope.page.previous !== 'undefined' ) {
+				$scope.transition = 'down';
 				$scope.goto($scope.page.previous.path);
+			}
 		}
 
 	}

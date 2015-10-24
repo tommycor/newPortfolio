@@ -1,0 +1,22 @@
+.main{
+	transition: transform 0.5s;
+	transform: translateY(0%);
+	
+	&.ng-leave-active {
+		&.up {
+			transform: translateY(-100%);
+		}
+		&.down {
+			transform: translateY(200%);
+		}
+	}
+	
+	&.ng-enter, &.ng-enter-active{
+		&.up {
+			transform: translateY(200%);
+		}
+		&.down {
+			transform: translateY(-100%);
+		}
+	}
+}
