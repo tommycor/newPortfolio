@@ -31,6 +31,19 @@ var configService = function() {
 		return config;
 	};
 
+	service.position = function(config, location) {
+		for ( var i = 0 ; i < config.flow.length ; i++ )
+		{
+			if ( location === config.flow[i].path ) {
+				return {
+					current: config.flow[i],
+					previous: config.flow[i-1],
+					next: config.flow[i+1]
+				};
+			}
+		}
+	};
+
 	return service;
 };
 

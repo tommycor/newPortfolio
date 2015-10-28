@@ -23,6 +23,8 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 	};
 
 	$scope.mousewheel = function (event) {
+		$scope.getPosition();
+
 		event.preventDefault();
 		
 		var delta = event.deltaY;
@@ -39,30 +41,30 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 				$scope.goto($scope.page.previous.path);
 			}
 		}
-
-	}
+	};
 
 	$scope.setConfig = function() {
 		$scope.config = configService.init();
-	}
+	};
 
 	$scope.getPosition = function() {
+		$scope.page = configService.position($scope.config, $location.path());
 
-		for ( var i = 0 ; i < $scope.config.flow.length ; i++ )
-		{
-			if ( $location.path() === $scope.config.flow[i].path ) {
-				$scope.page = {
-					current: $scope.config.flow[i],
-					previous: $scope.config.flow[i-1],
-					next: $scope.config.flow[i+1]
-				};
-			}
-		}
+		// for ( var i = 0 ; i < $scope.config.flow.length ; i++ )
+		// {
+		// 	if ( $location.path() === $scope.config.flow[i].path ) {
+		// 		$scope.page = {
+		// 			current: $scope.config.flow[i],
+		// 			previous: $scope.config.flow[i-1],
+		// 			next: $scope.config.flow[i+1]
+		// 		};
+		// 	}
+		// }
 	};
 
 	
 	// $window.addEventListener('mousewheel', $scope.mousewheel);
-	$window.addEventListener('mousewheel', throttle($scope.mousewheel, 1600, {
+	$window.addEventListener('mousewheel', throttle($scope.mousewheel, 2000, {
 		trailing: false
 	}));
 
