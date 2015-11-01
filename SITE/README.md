@@ -65,6 +65,6 @@
 
 ## Commit changes
 * in git bash enter the command ```git add .```
-* if files have been erased, in git bash enter the command ```git add -A```
+* if files have been erased, in git bash enter the command ```git add -A .``` (the dot is added since git 2.0)
 * in git bash enter the command ```git add -m "my message"```
 
