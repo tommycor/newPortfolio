@@ -1,13 +1,17 @@
 'use strict';
 
+// Requier all controlers
 var rootController = require('./root.js');
 var HomeController = require('./main/controllers/HomeController');
 var ProjectsController = require('./main/controllers/ProjectsController');
 var SingleController = require('./main/controllers/SingleController');
 var AboutController = require('./main/controllers/AboutController');
 
+// requier services
 var configService = require('./main/services/config');
 var ScollManagerService = require('./main/services/scrollManager');
+
+// requier animations
 var scrollAnimation = require('./main/animations/scrollAnimation');
 
 var myApp = angular.module('app', ['ngRoute', 'ngAnimate', 'main']);
@@ -36,13 +40,16 @@ myApp.config(function($routeProvider, $locationProvider, $sceDelegateProvider) {
 		// $locationProvider.html5Mode(true);
 	});
 
+// Setting myApp
 myApp.service('configService', [configService]);
 myApp.service('ScrollManagerService', ['$location', ScollManagerService]);
-myApp.animation('.scrollAnimation', [scrollAnimation]);
+myApp.animation('.scrollAnimation', ['$window', 'ScrollManagerService', scrollAnimation]);
 myApp.controller('RootController', ['$scope', '$location', '$interval', '$window', 'ScrollManagerService', 'configService', rootController]);
 
+// creating main Module
 var main = angular.module('main', []);
 
+// Setting main module
 main.controller('HomeController', ['$scope', '$location', HomeController]);
 main.controller('ProjectsController', ['$scope', '$location', ProjectsController]);
 main.controller('SingleController', ['$scope', '$location', '$routeParams', SingleController]);

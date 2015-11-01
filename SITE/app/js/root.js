@@ -3,15 +3,21 @@
 /* homeController */
 
 
-var rootController = function($scope, $location, $interval, $window, ScrollManagerService, configService) {
+var rootController = function($scope, $location, $interval, $window, ScrollManagerService, configService, scrollAnimation) {
 
 	var init = function() {
 		console.log('root');
 		$scope.setConfig();
 		$scope.getPosition();
-		// $scope.transition = 'up';
+
+		// General Listeners
+		$window.addEventListener('mousewheel', throttle($scope.mousewheel, $scope.config.UI.wheelThrottle, {
+			trailing: false
+		}));
 	};
 
+	// Goto fonction
+	// receive destination path
 	$scope.goto = function (dest) {
 		$scope.getPosition();
 
@@ -22,6 +28,8 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 		$scope.getPosition();
 	};
 
+	// Mousewheel function
+	// receive mousewheel event
 	$scope.mousewheel = function (event) {
 		$scope.getPosition();
 
@@ -31,13 +39,13 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 
 		if ( delta > 0 ) {
 			if ( typeof $scope.page.next !== 'undefined' ) {	
-				$scope.transition = 'up';
+				ScrollManagerService.setDirection('up');
 				$scope.goto($scope.page.next.path);
 			}
 		}
 		else {
 			if ( typeof $scope.page.previous !== 'undefined' ) {
-				$scope.transition = 'down';
+				ScrollManagerService.setDirection('down');
 				$scope.goto($scope.page.previous.path);
 			}
 		}
@@ -49,24 +57,8 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 
 	$scope.getPosition = function() {
 		$scope.page = configService.position($scope.config, $location.path());
-
-		// for ( var i = 0 ; i < $scope.config.flow.length ; i++ )
-		// {
-		// 	if ( $location.path() === $scope.config.flow[i].path ) {
-		// 		$scope.page = {
-		// 			current: $scope.config.flow[i],
-		// 			previous: $scope.config.flow[i-1],
-		// 			next: $scope.config.flow[i+1]
-		// 		};
-		// 	}
-		// }
 	};
 
-	
-	// $window.addEventListener('mousewheel', $scope.mousewheel);
-	$window.addEventListener('mousewheel', throttle($scope.mousewheel, 2000, {
-		trailing: false
-	}));
 
 	init();
 

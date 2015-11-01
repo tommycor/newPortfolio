@@ -107,4 +107,4 @@ gulp.task('watch', function() {
 });
 
 // Default task
-gulp.task('default', ['css', 'js', 'watch', 'jsLibs']);
+gulp.task('default', ['css', 'js', 'copy', 'jsLibs']);

@@ -6,6 +6,7 @@
 var configService = function() {
 	var service = {};
 
+	// General configuration for project
 	service.init = function() {
 		
 		var config = {
@@ -25,12 +26,16 @@ var configService = function() {
 					path: '/about',
 					order: 2
 				}
-			]
+			],
+			UI: {
+				wheelThrottle: 1600
+			}
 		};
 
 		return config;
 	};
 
+	// Return position in the main flown (home -> projects -> about)
 	service.position = function(config, location) {
 		for ( var i = 0 ; i < config.flow.length ; i++ )
 		{

@@ -5,9 +5,11 @@
 
 var scrollManagerService = function($location) {
 	var service = {};
+	this.direction = null;
 
-	service.test = function() {
-		console.log('scollManager');
+	// Setter variable scrolling direction
+	service.setDirection = function(dir) {
+		this.direction = dir;
 	};
 
 	return service;
