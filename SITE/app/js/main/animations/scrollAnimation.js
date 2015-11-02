@@ -7,6 +7,7 @@ var scrollAnimation = function( $window, ScrollManagerService ) {
 	var animation = {};
 
 	var transition = 1.5;
+	var delay = transition / 3;
 
 	animation.enter = function (elem, done) {
 
@@ -24,13 +25,13 @@ var scrollAnimation = function( $window, ScrollManagerService ) {
 		if ( ScrollManagerService.direction === 'up' )
 		{
 			TweenMax.set(elem, {y: height});
-			TweenMax.to(elem, transition / 2, {y:0, onComplete: done});
+			TweenMax.to(elem, transition / 2, {y:0, delay: delay, ease: Power1.easeOut, onComplete: done});
 		}
 		// go down
 		else if ( ScrollManagerService.direction === 'down' )
 		{
 			TweenMax.set(elem, {y: -height});
-			TweenMax.to(elem, transition / 2, {y:0, onComplete: done});
+			TweenMax.to(elem, transition / 2, {y:0, delay: delay, ease: Power1.easeOut, onComplete: done});
 		}
 	};
 
@@ -50,13 +51,13 @@ var scrollAnimation = function( $window, ScrollManagerService ) {
 		if ( ScrollManagerService.direction === 'up' )
 		{
 			TweenMax.set(elem, {y: 0});
-			TweenMax.to(elem, transition / 2, {y: -height, onComplete: done});
+			TweenMax.to(elem, transition / 2, {y: -height, ease: Power1.easeIn, onComplete: done});
 		}
 		// go down
 		else if ( ScrollManagerService.direction === 'down' )
 		{
 			TweenMax.set(elem, {y: 0});
-			TweenMax.to(elem, transition / 2, {y: height, onComplete: done});
+			TweenMax.to(elem, transition / 2, {y: height, ease: Power1.easeIn, onComplete: done});
 		}
 
 	};

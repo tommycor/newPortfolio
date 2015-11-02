@@ -28,7 +28,7 @@ var configService = function() {
 				}
 			],
 			UI: {
-				wheelThrottle: 1600
+				wheelThrottle: 2000
 			}
 		};
 
