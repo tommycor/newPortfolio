@@ -29,7 +29,7 @@ var tree_vertexShader = [
 
         '    vNormal = normal;',
 
-        '    vec3 fakePosition = morphed * vec3(1, 1, 0);',
+        '    vec3 fakePosition = position * vec3(1, 1, 0);',
 
         '    float distance = distance(mouse, fakePosition);',
 
@@ -53,8 +53,7 @@ var tree_vertexShader = [
         '        displacement = 0.0;',
         '    }',
 
-        //morphed is the variable provided by THREEJS with the ShaderChunk[ "morphtarget_vertex" ]
-        '    vec3 newPosition = morphed + normal * vec3(displacement);',
+        '    vec3 newPosition = position + normal * vec3(displacement);',
 
         '    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );',
 

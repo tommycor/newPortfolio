@@ -100,7 +100,7 @@ draw.prototype.init = function(){
 
 	this.createParticles();
 
-	this.geometry = this.loadModel("js/exp/model/tree_morphed.json");
+	this.geometry = this.loadModel("js/exp/model/tree.json");
 
 	this.container.appendChild(this.renderer.domElement);
 
@@ -228,7 +228,7 @@ draw.prototype.loadedModel = function(geometry) {
 	this.material = new THREE.ShaderMaterial( {
 		wireframe: true,
 		uniforms: this.uniforms,
-		morphTargets: true,
+		morphTargets: false,
 		vertexShader: tree_vertexShader,
 		fragmentShader: tree_fragmentShader
 	});
@@ -236,8 +236,6 @@ draw.prototype.loadedModel = function(geometry) {
 
 	this.mesh = new THREE.Mesh(this.geometry, this.material);
 	this.mesh.name = "Tree";
-	this.mesh.morphTargetInfluences[0] = 0.4;
-	this.mesh.morphTargetInfluences[1] = 0.7;
 	this.mesh.position.y = -400;
 	this.camera.updateProjectionMatrix();
 	this.mesh.updateMatrixWorld();
@@ -245,8 +243,7 @@ draw.prototype.loadedModel = function(geometry) {
 	this.mesh.rotationAutoUpdate = true;
 	this.mesh.castShadow = true;
 	this.scene.add(this.mesh);
-
-	this.animIntro();
+	console.log(this.mesh);
 
 	window.addEventListener('mousemove', this.update, false);
 
