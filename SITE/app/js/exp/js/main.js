@@ -126,8 +126,6 @@ draw.prototype.render = function() {
 		this.uniforms.mouse.value.z -= this.reduceSpeed;
 	}
 
-	TWEEN.update();
-
 	requestAnimationFrame(this.render);
 };
 
