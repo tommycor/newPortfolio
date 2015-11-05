@@ -23,9 +23,9 @@
 ## Project installation
 * install puphpet files
 	- go to [puphpet](https://puphpet.com/)
-	- drag on the page the file config.yaml
+	- drag on the page the file puphpet/config.yaml
 	- create the archive on puphpet
-	- Unzip the whole archive in the project directory
+	- Unzip the whole archive in the project directory (and don't give a damn potatoe about replacing the old config.yaml, they're the same)
 	- add in C:\Windows\System32\drivers\etc\hosts file ```192.168.56.101	local.dev```
 * in cmd enter the command ```vagrant up``` in project directory
 * Install and configure HeidiSQL
