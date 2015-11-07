@@ -12,6 +12,11 @@ var projectsController = function($scope, $location) {
 		start();
 	};
 
+	$scope.over = function() {
+		console.log('over');
+		console.log(event);
+	}
+
 	init();
 };
 

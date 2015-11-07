@@ -241,7 +241,6 @@ draw.prototype.loadedModel = function(geometry) {
 	this.mesh.rotationAutoUpdate = true;
 	this.mesh.castShadow = true;
 	this.scene.add(this.mesh);
-	console.log(this.mesh);
 
 	window.addEventListener('mousemove', this.update, false);
 
