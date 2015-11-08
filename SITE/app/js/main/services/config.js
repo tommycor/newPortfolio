@@ -14,17 +14,20 @@ var configService = function() {
 				{
 					name: 'home',
 					path: '/',
-					order: 0
+					order: 0,
+					veil: ''
 				},
 				{
 					name: 'projects',
 					path: '/projects',
-					order: 1
+					order: 1,
+					veil: 'is--active'
 				},
 				{
 					name: 'about',
 					path: '/about',
-					order: 2
+					order: 2,
+					veil: ''
 				}
 			],
 			UI: {

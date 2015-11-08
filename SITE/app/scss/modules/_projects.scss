@@ -1,0 +1,78 @@
+$padding_title: 7px 0;
+$margin_button: 20px 0;
+
+.projects {
+
+	&__list {
+		@extend %horizontal-vertical-center;
+
+		&__item {
+			@extend %horizontal-center-relative;
+
+			&::after {
+				height: 1px;
+				width: 100%;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				background-color: $gold;
+			}
+
+			&__button {
+				margin: $margin_button;
+				position: relative;
+				overflow: hidden;
+				
+				&__title {
+					margin: 0;
+					padding: $padding_title;
+				}
+
+				&__line {
+					height: 3px;
+					width: 50%;
+					position: absolute;
+					background-color: $gold;
+					transition: width 0.5s ease-in-out;
+
+					&--top {
+						top: 0;
+					}
+
+					&--bottom {
+						bottom: 0;
+					}
+
+					&--left {
+						left: 0;
+					}
+					&--right {
+						right: 0;
+					}
+
+					&--middle{
+						@extend %horizontal-vertical-center;
+						width: 0;
+					}
+				}
+
+				&:hover {
+					.projects__list__item__button__line {
+
+						&--top {
+							width: 0%;
+						}
+
+						&--bottom {
+							width: 0%;
+						}
+
+						&--middle{
+							width: 100%;
+						}
+					}
+				}
+			}
+		}
+	}
+}

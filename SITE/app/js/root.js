@@ -57,6 +57,8 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 
 	$scope.getPosition = function() {
 		$scope.page = configService.position($scope.config, $location.path());
+
+		$scope.veil = $scope.page.current.veil;
 	};
 
 
