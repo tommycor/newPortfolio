@@ -6,6 +6,7 @@ var HomeController = require('./main/controllers/HomeController');
 var ProjectsController = require('./main/controllers/ProjectsController');
 var SingleController = require('./main/controllers/SingleController');
 var AboutController = require('./main/controllers/AboutController');
+var sliderDirective = require('./main/directives/sliderDirective');
 
 // requier services
 var configService = require('./main/services/config');

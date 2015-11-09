@@ -31,6 +31,33 @@
 }
 
 
+
+.arrowLeft {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	z-index: 1;
+
+	&__img {
+		display: block;
+		float: left;
+		width: 15px;
+	}
+	&__text {
+		display: block;
+		float: left;
+		left: 0;
+		top: -25px;
+		text-transform: uppercase;
+		font-family: "pier";
+		font-weight: $font_weight_regular;
+		font-size: 10px;
+		color: $gold;
+		padding: 12px;
+	}
+}
+
+
 @keyframes arrow {
 	0%		{transform: translateY(0px); opacity: 1;}
 	80%		{transform: translateY(0px); opacity: 1;}

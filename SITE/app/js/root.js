@@ -18,12 +18,29 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 
 	// Goto fonction
 	// receive destination path
-	$scope.goto = function (dest) {
+	$scope.goto = function (dest){
 		$scope.getPosition();
 
 		$scope.$apply(function() {
 			$location.path(dest);
 		});
+		
+		$scope.getPosition();
+	};
+
+
+	$scope.gotoProjects = function (project){
+		$scope.getPosition();
+
+		
+		$scope.getPosition();
+
+		if( project === '')
+			ScrollManagerService.setDirection('right');
+		else
+			ScrollManagerService.setDirection('left');
+
+		$location.path('/projects/' + project);
 		
 		$scope.getPosition();
 	};
@@ -58,7 +75,9 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 	$scope.getPosition = function() {
 		$scope.page = configService.position($scope.config, $location.path());
 
-		$scope.veil = $scope.page.current.veil;
+		if ( typeof $scope.page !== 'undefined' )
+			if ( typeof $scope.page.current !== 'undefined' )
+				$scope.veil = $scope.page.current.veil;
 	};
 
 
