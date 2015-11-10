@@ -23,9 +23,7 @@ var singleController = function($scope, $location, $routeParams) {
 			$scope.$emit('canvasLoaded');
 		};
 
-		// this.canvas.addEventListener('click', throttle(scroll, {
-		// 	trailing: false
-		// }));
+		this.canvas.addEventListener('click', this.scroll);
 	};
 
 	this.loaded = function() {
@@ -49,9 +47,8 @@ var singleController = function($scope, $location, $routeParams) {
 	};
 
 	this.scroll = function(event) {
-
-		TweenMax.set(elem, {x: 0});
-		TweenMax.to(elem, 1, {delay:1, x: 1, onComplete: done});
+		TweenMax.to(this.img, 1, { dY1: -this.canvasHeight, ease: Power1.easeInOut } );
+		TweenMax.to(this.img, 1, { dY2: this.canvasHeight, ease: Power1.easeInOut } );
 	};
 
 	this.draw = function() {
