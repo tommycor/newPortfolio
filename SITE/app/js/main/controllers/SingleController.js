@@ -18,25 +18,52 @@ var singleController = function($scope, $location, $routeParams) {
 		this.canvas.setAttribute('height', this.canvasHeight + "px");
 
 		this.img = new Image();
-		this.img.src = this.images[2];
+		this.img.src = this.images[0];
 		this.img.onload = function(){
 			$scope.$emit('canvasLoaded');
 		};
+
+		// this.canvas.addEventListener('click', throttle(scroll, {
+		// 	trailing: false
+		// }));
 	};
 
 	this.loaded = function() {
 
-		this.imgRatio = this.img.width / this.img.height;
-		this.newWidth = this.canvasWidth;
-		this.newHeight = this.canvasHeight;
-		
+		this.canvasRatio = this.canvasWidth / this.canvasHeight;
 
-		this.newHeight = Math.round(this.canvasWidth / this.imgRatio);
+		this.img.sHeight = this.img.width / this.canvasRatio;
+		this.img.sy = ( this.img.height / 2 ) - ( this.img.sHeight / 2 );
 
-		this.ctx.drawImage(this.img, 0, 0, this.newWidth, this.newHeight);
+		this.img.sWidth = this.img.width / 2;
+		this.img.sX1 = 0;
+		this.img.sX2 = this.img.sWidth;
+		this.dWidth = this.canvasWidth / 2;
+		this.dHeight = this.canvasHeight;
+		this.dX1 = 0;
+		this.dX2 = this.dWidth;
+		this.img.dY1 = 0;
+		this.img.dY2 = 0;
+
+		TweenMax.ticker.addEventListener("tick", this.draw);
+	};
+
+	this.scroll = function(event) {
+
+		TweenMax.set(elem, {x: 0});
+		TweenMax.to(elem, 1, {delay:1, x: 1, onComplete: done});
+	};
+
+	this.draw = function() {
+		this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+		this.ctx.drawImage(this.img, this.img.sX1, this.img.sy, this.img.sWidth, this.img.sHeight, this.dX1, this.img.dY1, this.dWidth, this.dHeight);
+		this.ctx.drawImage(this.img, this.img.sX2, this.img.sy, this.img.sWidth, this.img.sHeight, this.dX2, this.img.dY2, this.dWidth, this.dHeight);
 	};
 
 	this.loaded = this.loaded.bind(this);
+	this.draw = this.draw.bind(this);
+	this.scroll = this.scroll.bind(this);
 	$scope.$on('canvasLoaded', this.loaded);
 
 	this.init();
