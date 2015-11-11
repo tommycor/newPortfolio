@@ -367,8 +367,6 @@ draw.prototype.createParticles = function() {
 		this.particlesGeometry.vertices.push(v);
 
 		this.pSize.push(Math.random()*50);
-
-		// this.pSize.push(100);
 		
 	}
 
@@ -406,9 +404,7 @@ draw.prototype.createParticles = function() {
 	this.particles.sortParticles = true;
 
 	this.scene.add(this.particles);
-
-
-
+	console.log(this.scene)
 
 };
 

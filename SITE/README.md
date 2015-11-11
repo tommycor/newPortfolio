@@ -15,6 +15,7 @@
 ## Fork Process
 * Fork the project through Github
 * in git bash enter the command ```https://github.com/tommycor/starter-Angular.git``` or ```git@github.com:tommycor/starter-Angular.git``` (ssh style)
+* git remote add upstream ```git@github.com:tommycor/starter-Angular.git```
 * in git bash enter the command ```git fetch upstream```
 * in git bash enter the command ```git merge upstream/master```
 
