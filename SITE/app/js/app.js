@@ -11,6 +11,7 @@ var sliderDirective = require('./main/directives/sliderDirective');
 // requier services
 var configService = require('./main/services/config');
 var ScollManagerService = require('./main/services/scrollManager');
+var ImageLoaderService = require('./main/services/ImageLoaderService');
 
 // requier animations
 var scrollAnimation = require('./main/animations/scrollAnimation');
@@ -44,6 +45,7 @@ myApp.config(function($routeProvider, $locationProvider, $sceDelegateProvider) {
 // Setting myApp
 myApp.service('configService', [configService]);
 myApp.service('ScrollManagerService', ['$location', ScollManagerService]);
+myApp.service('ImageLoaderService', ['$q', ImageLoaderService]);
 myApp.animation('.scrollAnimation', ['$window', 'ScrollManagerService', scrollAnimation]);
 myApp.controller('RootController', ['$scope', '$location', '$interval', '$window', 'ScrollManagerService', 'configService', rootController]);
 
@@ -53,5 +55,5 @@ var main = angular.module('main', []);
 // Setting main module
 main.controller('HomeController', ['$scope', '$location', HomeController]);
 main.controller('ProjectsController', ['$scope', '$location', ProjectsController]);
-main.controller('SingleController', ['$scope', '$location', '$routeParams', SingleController]);
+main.controller('SingleController', ['$scope', '$location', '$routeParams', '$window', 'ImageLoaderService', SingleController]);
 main.controller('AboutController', ['$scope', '$location', AboutController]);

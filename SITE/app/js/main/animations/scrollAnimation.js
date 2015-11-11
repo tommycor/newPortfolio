@@ -65,8 +65,7 @@ var scrollAnimation = function( $window, ScrollManagerService ) {
 		// First Arrival
 		if ( typeof ScrollManagerService.direction === 'undefined' )
 		{
-			TweenMax.set(elem, {opacity: 0});
-			TweenMax.to(elem, 1, {delay:1, opacity: 1, onComplete: done});
+			ScrollManagerService.setDirection('right');
 		}
 
 		var height = $window.innerHeight;
