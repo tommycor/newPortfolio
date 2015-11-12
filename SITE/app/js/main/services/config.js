@@ -31,7 +31,8 @@ var configService = function() {
 				}
 			],
 			UI: {
-				wheelThrottle: 2000
+				wheelThrottle: 2000,
+				sliderDelay: 5000
 			}
 		};
 

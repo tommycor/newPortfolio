@@ -7,15 +7,16 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 
 	var init = function() {
 		console.log('root');
-		$scope.setConfig();
+		$scope.setConfig();	
 		$scope.getPosition();
 
 		// General Listeners
 		$window.addEventListener('mousewheel', throttle($scope.mousewheel, $scope.config.UI.wheelThrottle, {
 			trailing: false
 		}));
-		$window.addEventListener('build', function(){ 
-			$scope.loadingFinish = true;
+		$window.addEventListener('build', function(){
+			var loader = document.getElementById('mainLoader');
+			loader.className = loader.className + ' hide'
 		});
 	};
 
@@ -33,9 +34,6 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 
 
 	$scope.gotoProjects = function (project){
-		$scope.getPosition();
-
-		
 		$scope.getPosition();
 
 		if( project === '')

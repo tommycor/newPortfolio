@@ -55,5 +55,5 @@ var main = angular.module('main', []);
 // Setting main module
 main.controller('HomeController', ['$scope', '$location', HomeController]);
 main.controller('ProjectsController', ['$scope', '$location', ProjectsController]);
-main.controller('SingleController', ['$scope', '$location', '$routeParams', '$window', 'ImageLoaderService', SingleController]);
+main.controller('SingleController', ['$scope', '$location', '$routeParams', '$window', '$interval', 'ImageLoaderService', 'configService', SingleController]);
 main.controller('AboutController', ['$scope', '$location', AboutController]);

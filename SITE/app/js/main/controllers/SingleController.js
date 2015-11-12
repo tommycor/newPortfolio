@@ -2,7 +2,7 @@
 
 /* singleController */
 
-var singleController = function($scope, $location, $routeParams, $window, ImageLoaderService) {
+var singleController = function($scope, $location, $routeParams, $window, $interval, ImageLoaderService, configService) {
 
 	this.init = function() {
 
@@ -38,6 +38,8 @@ var singleController = function($scope, $location, $routeParams, $window, ImageL
 		TweenMax.ticker.addEventListener('tick', this.draw);
 
 		$scope.canvasLoaded = true;
+
+		$interval(this.scroll, $scope.config.UI.sliderDelay, 0);
 	};
 
 	this.scroll = function(event) {
