@@ -38,11 +38,13 @@ var singleController = function($scope, $location, $routeParams, $window, $inter
 		TweenMax.ticker.addEventListener('tick', this.draw);
 
 		$scope.canvasLoaded = true;
-
-		$interval(this.scroll, $scope.config.UI.sliderDelay, 0);
 	};
 
-	this.scroll = function(event) {
+	this.scroll = function() {
+
+		$interval.cancel(this.interval);
+		this.canvas.removeEventListener('click', this.scroll);
+
 		TweenMax.to(this.images[this.index.current], 1, { dY1: -this.canvasHeight, ease: Power1.easeInOut } );
 		TweenMax.to(this.images[this.index.current], 1, { dY2: this.canvasHeight, ease: Power1.easeInOut } );
 
@@ -71,6 +73,9 @@ var singleController = function($scope, $location, $routeParams, $window, $inter
 	};
 
 	this.position = function() {
+		this.interval = $interval(this.scroll, $scope.config.UI.sliderDelay, 0);
+		this.canvas.addEventListener('click', this.scroll);
+
 		this.transition = false;
 
 		if( typeof this.index.current === 'undefined')

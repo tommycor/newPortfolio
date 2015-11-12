@@ -9,7 +9,6 @@
 	transition: opacity 0.5s;
 
 	&__img {
-		margin-left: 8px;
 		animation-name: arrow;
 		animation-duration: 8s;
 		animation-iteration-count: infinite;
@@ -24,6 +23,17 @@
 		font-weight: $font_weight_regular;
 		font-size: 10px;
 		color: white;
+	}
+
+	&--projects {
+		&__img {
+			margin-left: 8px;
+		}
+	}
+	&--about {
+		&__img {
+			margin-left: 2px;
+		}
 	}
 }
 .arrowDown:hover {

@@ -12,8 +12,17 @@
 		opacity: 0;
 		visibility: hidden;
 	}
+	&.ng-hide {
+		opacity: 0;
+	}
 
 	&__svg {
 		@extend %horizontal-vertical-center;
+	}
+
+	&--main {
+		&__svg {
+			transform: translate(-50%, 10px);
+		}
 	}
 }

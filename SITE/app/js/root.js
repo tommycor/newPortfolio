@@ -32,6 +32,16 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 		$scope.getPosition();
 	};
 
+	$scope.gotoArrow = function (dest){
+		$scope.getPosition();
+
+		ScrollManagerService.setDirection('up');
+
+		$location.path(dest);
+		
+		$scope.getPosition();
+	};
+
 
 	$scope.gotoProjects = function (project){
 		$scope.getPosition();
