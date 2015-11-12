@@ -14,18 +14,81 @@
 		<div class="mainTitle__net mainTitle__net--left"></div><div class="mainTitle__net mainTitle__net--right"></div>
 	</header>
 	<div id="exp" ng-mouse-wheel-up=></div>
+	<div class="loader" ng-hide="loadingFinish">
+		<div class="mainTitle">
+			<h1 class="mainTitle__h1">Tommy Cornilleau</h1>
+			<h2 class="mainTitle__h2">Creative Developper</h2>
+			<div class="mainTitle__net mainTitle__net--left"></div><div class="mainTitle__net mainTitle__net--right"></div>
+		</div>
+		<svg class="loader__svg" width="60" height="60" viewBox="0 0 105 105" xmlns="http://www.w3.org/2000/svg" fill="#d79b19">
+			<circle cx="12.5" cy="12.5" r="7">
+				<animate attributeName="fill-opacity"
+				begin="0s" dur="1s"
+				values="1;.2;1" calcMode="linear"
+				repeatCount="indefinite" />
+			</circle>
+			<circle cx="12.5" cy="52.5" r="7" fill-opacity=".5">
+				<animate attributeName="fill-opacity"
+				begin="100ms" dur="1s"
+				values="1;.2;1" calcMode="linear"
+				repeatCount="indefinite" />
+			</circle>
+			<circle cx="52.5" cy="12.5" r="7">
+				<animate attributeName="fill-opacity"
+				begin="300ms" dur="1s"
+				values="1;.2;1" calcMode="linear"
+				repeatCount="indefinite" />
+			</circle>
+			<circle cx="52.5" cy="52.5" r="7">
+				<animate attributeName="fill-opacity"
+				begin="600ms" dur="1s"
+				values="1;.2;1" calcMode="linear"
+				repeatCount="indefinite" />
+			</circle>
+			<circle cx="92.5" cy="12.5" r="7">
+				<animate attributeName="fill-opacity"
+				begin="800ms" dur="1s"
+				values="1;.2;1" calcMode="linear"
+				repeatCount="indefinite" />
+			</circle>
+			<circle cx="92.5" cy="52.5" r="7">
+				<animate attributeName="fill-opacity"
+				begin="400ms" dur="1s"
+				values="1;.2;1" calcMode="linear"
+				repeatCount="indefinite" />
+			</circle>
+			<circle cx="12.5" cy="92.5" r="7">
+				<animate attributeName="fill-opacity"
+				begin="700ms" dur="1s"
+				values="1;.2;1" calcMode="linear"
+				repeatCount="indefinite" />
+			</circle>
+			<circle cx="52.5" cy="92.5" r="7">
+				<animate attributeName="fill-opacity"
+				begin="500ms" dur="1s"
+				values="1;.2;1" calcMode="linear"
+				repeatCount="indefinite" />
+			</circle>
+			<circle cx="92.5" cy="92.5" r="7">
+				<animate attributeName="fill-opacity"
+				begin="200ms" dur="1s"
+				values="1;.2;1" calcMode="linear"
+				repeatCount="indefinite" />
+			</circle>
+		</svg>
+	</div>
 	<div class="veil {{veil}}"></div>
 	<div ng-view ng-animate class="main page--{{page.current.name}} scrollAnimation"></div>
 	<script src="libs/libs.js"></script>
 	<script src="js/app.js"></script>
-    <script src="js/exp/shaders/tree_vertexShader.js"></script>
-    <script src="js/exp/shaders/tree_fragmentShader.js"></script>
-    <script src="js/exp/shaders/floor_vertexShader.js"></script>
-    <script src="js/exp/shaders/floor_fragmentShader.js"></script>
-    <script src="js/exp/shaders/mountain_vertexShader.js"></script>
-    <script src="js/exp/shaders/mountain_fragmentShader.js"></script>
-    <script src="js/exp/shaders/particles_vertexShader.js"></script>
-    <script src="js/exp/shaders/particles_fragmentShader.js"></script>
-    <script src="js/exp/js/main.js"></script>
+	<script src="js/exp/shaders/tree_vertexShader.js"></script>
+	<script src="js/exp/shaders/tree_fragmentShader.js"></script>
+	<script src="js/exp/shaders/floor_vertexShader.js"></script>
+	<script src="js/exp/shaders/floor_fragmentShader.js"></script>
+	<script src="js/exp/shaders/mountain_vertexShader.js"></script>
+	<script src="js/exp/shaders/mountain_fragmentShader.js"></script>
+	<script src="js/exp/shaders/particles_vertexShader.js"></script>
+	<script src="js/exp/shaders/particles_fragmentShader.js"></script>
+	<script src="js/exp/js/main.js"></script>
 </body>
 </html>

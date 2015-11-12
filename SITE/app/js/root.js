@@ -14,6 +14,9 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 		$window.addEventListener('mousewheel', throttle($scope.mousewheel, $scope.config.UI.wheelThrottle, {
 			trailing: false
 		}));
+		$window.addEventListener('build', function(){ 
+			$scope.loadingFinish = true;
+		});
 	};
 
 	// Goto fonction

@@ -36,6 +36,8 @@ var singleController = function($scope, $location, $routeParams, $window, ImageL
 		this.position();
 
 		TweenMax.ticker.addEventListener('tick', this.draw);
+
+		$scope.canvasLoaded = true;
 	};
 
 	this.scroll = function(event) {
