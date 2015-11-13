@@ -11,7 +11,7 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 		$scope.getPosition();
 
 		// General Listeners
-		$window.addEventListener('mousewheel', throttle($scope.mousewheel, $scope.config.UI.wheelThrottle, {
+		$window.addEventListener('wheel', throttle($scope.mousewheel, $scope.config.UI.wheelThrottle, {
 			trailing: false
 		}));
 		$window.addEventListener('build', function(){
@@ -62,6 +62,8 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 		$scope.getPosition();
 
 		event.preventDefault();
+
+		console.log(event);
 		
 		var delta = event.deltaY;
 
