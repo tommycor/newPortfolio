@@ -10,8 +10,6 @@ var draw = function() {
 
 	this.container = document.getElementById('exp');
 
-	this.event = new Event('build');
-
 	this.render = this.render.bind(this);
 	this.handleResize = this.handleResize.bind(this);
 	this.update = this.update.bind(this);
@@ -246,7 +244,9 @@ draw.prototype.loadedModel = function(geometry) {
 
 	window.addEventListener('mousemove', this.update, false);
 
-	window.dispatchEvent(this.event);
+	
+			var loader = document.getElementById('mainLoader');
+			loader.className = loader.className + ' hide'
 
 	this.render();
 	this.renderer.render(this.scene, this.camera);

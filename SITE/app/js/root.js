@@ -14,10 +14,6 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 		$window.addEventListener('wheel', throttle($scope.mousewheel, $scope.config.UI.wheelThrottle, {
 			trailing: false
 		}));
-		$window.addEventListener('build', function(){
-			var loader = document.getElementById('mainLoader');
-			loader.className = loader.className + ' hide'
-		});
 	};
 
 	// Goto fonction
