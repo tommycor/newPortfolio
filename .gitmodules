@@ -1,0 +1,3 @@
+[submodule "SITE/WordPress"]
+	path = SITE/WordPress
+	url = https://github.com/WordPress/WordPress.git

@@ -1,17 +1,17 @@
 vagrantfile:
     target: local
     vm:
-        box: puphpet/ubuntu1404-x64
-        box_url: puphpet/ubuntu1404-x64
-        hostname: portfolio
+        box: puphpet/debian75-x64
+        box_url: puphpet/debian75-x64
+        hostname: protfolio
         memory: '512'
         cpus: '1'
         chosen_provider: virtualbox
         network:
             private_network: 192.168.56.101
             forwarded_port:
-                vflnp_wl0vib41zfqk:
-                    host: '5622'
+                vflnp_9cgo4y2j0jh3:
+                    host: '6762'
                     guest: '22'
         post_up_message: ''
         provider:
@@ -33,7 +33,7 @@ vagrantfile:
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            vflsf_d2vkja1gy47q:
+            vflsf_7b4o94s7lp1v:
                 source: ./
                 target: /var/www/local.dev
                 sync_type: default
@@ -73,8 +73,7 @@ server:
 users_groups:
     install: '1'
     groups: {  }
-    users:
-        - tommy
+    users: {  }
 locale:
     install: '1'
     settings:
@@ -96,11 +95,11 @@ nginx:
         proxy_buffers: '4 256k'
     upstreams: {  }
     vhosts:
-        nxv_p9d16lm7uboq:
-            server_name: local.dev
+        nxv_xufeazvl4cgl:
+            server_name: awesome.dev
             server_aliases:
-                - www.local.dev
-            www_root: /var/www/local.dev
+                - www.awesome.dev
+            www_root: /var/www/awesome
             listen_port: '80'
             index_files:
                 - index.html
@@ -116,7 +115,7 @@ nginx:
             rewrite_to_https: '1'
             spdy: '1'
             locations:
-                nxvl_39jbuzsw3ypz:
+                nxvl_l3uuvx3bcepk:
                     location: /
                     autoindex: 'off'
                     internal: 'false'
@@ -127,7 +126,7 @@ nginx:
                     fastcgi: ''
                     fastcgi_index: ''
                     fastcgi_split_path: ''
-                nxvl_ego4c8ov9u8s:
+                nxvl_p644dp5ob2ws:
                     location: '~ \.php$'
                     autoindex: 'off'
                     internal: 'false'
@@ -155,8 +154,10 @@ apache:
         - proxy_fcgi
         - rewrite
     vhosts:
-        av_h5xklu5suczn:
+        av_p1lnyvnjv3by:
             servername: local.dev
+            serveraliases:
+                - local.dev
             docroot: /var/www/local.dev
             port: '80'
             setenv:
@@ -170,7 +171,7 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_jsc3n48g0vta:
+                avd_z8lvknqfuqlj:
                     path: /var/www/local.dev
                     options:
                         - Indexes
@@ -182,7 +183,7 @@ apache:
                         - 'all granted'
                     custom_fragment: ''
                     files_match:
-                        avdfm_ahv36y70xc1r:
+                        avdfm_q07eyqe6cfkz:
                             path: \.php$
                             sethandler: 'proxy:fcgi://127.0.0.1:9000'
                             custom_fragment: ''
@@ -207,7 +208,7 @@ php:
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
-        phpfp_2ust3lh0h37b:
+        phpfp_5ywv5pcxyzay:
             ini:
                 prefix: www
                 listen: '127.0.0.1:9000'
@@ -290,15 +291,15 @@ mariadb:
         override_options: {  }
     adminer: 0
     users:
-        mariadbnu_8r548nr7q31a:
+        mariadbnu_llejja91vq9g:
             name: dbuser
             password: '123'
     databases:
-        mariadbnd_putcmtmmdunq:
+        mariadbnd_gil7kdd772ew:
             name: dbname
             sql: ''
     grants:
-        mariadbng_phn209v9727u:
+        mariadbng_x6c0aja4cepd:
             user: dbuser
             table: '*.*'
             privileges:
@@ -367,3 +368,4 @@ solr:
     settings:
         version: 4.10.2
         port: '8984'
+
