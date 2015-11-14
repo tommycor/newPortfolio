@@ -3,12 +3,14 @@
 /* homeController */
 
 
-var rootController = function($scope, $location, $interval, $window, ScrollManagerService, configService, scrollAnimation) {
+var rootController = function($scope, $location, $interval, $window, $http, ScrollManagerService, configService) {
 
 	var init = function() {
 		console.log('root');
 		$scope.setConfig();	
 		$scope.getPosition();
+		$scope.getPosts();
+
 
 		// General Listeners
 		$window.addEventListener('wheel', throttle($scope.mousewheel, $scope.config.UI.wheelThrottle, {
@@ -39,13 +41,15 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 	};
 
 
-	$scope.gotoProjects = function (project){
+	$scope.gotoProjects = function (project, index){
 		$scope.getPosition();
 
 		if( project === '')
 			ScrollManagerService.setDirection('right');
 		else
 			ScrollManagerService.setDirection('left');
+
+		$scope.currentPost = $scope.posts[index];
 
 		$location.path('/projects/' + project);
 		
@@ -87,6 +91,23 @@ var rootController = function($scope, $location, $interval, $window, ScrollManag
 		if ( typeof $scope.page !== 'undefined' )
 			if ( typeof $scope.page.current !== 'undefined' )
 				$scope.veil = $scope.page.current.veil;
+	};
+
+	$scope.getPosts = function() {
+		var url = $scope.config.data.main + $scope.config.data.posts;
+
+		var request = $http({method: 'GET', url: url});
+
+		request.success(
+			function(data) {
+				$scope.posts = data;
+			}
+		);
+		request.error(
+			function(error) {
+				console.log(error);
+			}
+		);
 	};
 
 

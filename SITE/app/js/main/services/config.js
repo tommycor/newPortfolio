@@ -33,6 +33,10 @@ var configService = function() {
 			UI: {
 				wheelThrottle: 2000,
 				sliderDelay: 5000
+			},
+			data: {
+				main: 'http://local.dev/',
+				posts: 'wordpress/wp-json/posts'
 			}
 		};
 

@@ -1,5 +1,17 @@
 <section class="projects">
 	<ul class="projects__list">
+		<li class="projects__list__item" ng-repeat="post in posts track by $index">
+			<button class="projects__list__item__button" ng-click="gotoProjects(post.slug, $index)" >
+				<div class="projects__list__item__button__line--top projects__list__item__button__line--left projects__list__item__button__line"></div>
+				<div class="projects__list__item__button__line--top projects__list__item__button__line--right projects__list__item__button__line"></div>
+				<div class="projects__list__item__button__line--middle projects__list__item__button__line"></div>
+					<h4 class="projects__list__item__button__title  h4">{{post.title}}</h4>
+				<div class="projects__list__item__button__line--bottom projects__list__item__button__line--left projects__list__item__button__line"></div>
+				<div class="projects__list__item__button__line--bottom projects__list__item__button__line--right projects__list__item__button__line"></div>
+			</button>
+		</li>
+	</ul>
+	<!-- <ul class="projects__list">
 		<li class="projects__list__item">
 			<button class="projects__list__item__button" ng-click="gotoProjects('sdfsd')" >
 				<div class="projects__list__item__button__line--top projects__list__item__button__line--left projects__list__item__button__line"></div>
@@ -40,7 +52,7 @@
 				<div class="projects__list__item__button__line--bottom projects__list__item__button__line--right projects__list__item__button__line"></div>
 			</button>
 		</li>
-	</ul>
+	</ul> -->
 	<button class="arrowDown arrowDown--about" ng-click="gotoArrow('/about')">
 		<span class="arrowDown__text">About</span>
 		<img src="img/arrow-down.svg" class="arrowDown__img arrowDown--about__img">

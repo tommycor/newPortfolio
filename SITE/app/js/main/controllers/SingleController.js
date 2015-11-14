@@ -6,7 +6,14 @@ var singleController = function($scope, $location, $routeParams, $window, $inter
 
 	this.init = function() {
 
-		this.data = ['/../../img_examples/P8160006.jpg', '/../../img_examples/P8160021.jpg', '/../../img_examples/P8160029_1.jpg', '/../../img_examples/P8160021.jpg'];
+		this.data = [];
+
+		for( var i = 0 ; i < $scope.currentPost.meta.gallery.length ; i++) {
+			this.data[i] = $scope.currentPost.meta.gallery[i].url;
+		}
+		console.log($scope.currentPost);
+
+
 
 
 		this.canvas = document.querySelector('#gallery');

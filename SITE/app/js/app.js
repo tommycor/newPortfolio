@@ -12,11 +12,12 @@ var sliderDirective = require('./main/directives/sliderDirective');
 var configService = require('./main/services/config');
 var ScollManagerService = require('./main/services/scrollManager');
 var ImageLoaderService = require('./main/services/ImageLoaderService');
+var dataLoaderService = require('./main/services/dataLoaderService');
 
 // requier animations
 var scrollAnimation = require('./main/animations/scrollAnimation');
 
-var myApp = angular.module('app', ['ngRoute', 'ngAnimate', 'main']);
+var myApp = angular.module('app', ['ngRoute', 'ngAnimate', 'ngSanitize', 'main']);
 
 myApp.config(function($routeProvider, $locationProvider, $sceDelegateProvider) {
 		$routeProvider.when('/', {
@@ -46,8 +47,9 @@ myApp.config(function($routeProvider, $locationProvider, $sceDelegateProvider) {
 myApp.service('configService', [configService]);
 myApp.service('ScrollManagerService', ['$location', ScollManagerService]);
 myApp.service('ImageLoaderService', ['$q', ImageLoaderService]);
+myApp.service('dataLoaderService', ['$http', dataLoaderService]);
 myApp.animation('.scrollAnimation', ['$window', 'ScrollManagerService', scrollAnimation]);
-myApp.controller('RootController', ['$scope', '$location', '$interval', '$window', 'ScrollManagerService', 'configService', rootController]);
+myApp.controller('RootController', ['$scope', '$location', '$interval', '$window', '$http', 'ScrollManagerService', 'configService', rootController]);
 
 // creating main Module
 var main = angular.module('main', []);

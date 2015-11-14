@@ -1,0 +1,3 @@
+login: admin
+mdp: LZUTPXEXI4Ny
+mdp: asAlways
