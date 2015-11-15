@@ -2,7 +2,7 @@
 
 /* aboutController */
 
-var aboutController = function($scope) {
+var aboutController = function($scope, $http) {
 
 	this.init = function() {
 
@@ -19,19 +19,27 @@ var aboutController = function($scope) {
 
 		if ($scope.messageForm.$invalid === true)
 			return;
-		console.log($scope.message)
 
-		var request = $http.post($scope.target , null, $scope.message);
+
+		var config = {
+			params: {
+				message: $scope.message
+			}
+		};
+
+		var request = $http.post($scope.target, null, config);
 
 		request.success(
 			function(data) {
-				alert('rise like a phoenix');
-				console.log(data);
+				if(data === 'done')
+					$scope.send = 'true';
+				else
+					console.log('Seems like serve is not liking something.');
 			}
 		);
 		request.error(
-			function(data) {
-				alert('fall like a potatoe mash');
+			function() {
+				alert('failed like a potatoe mash');
 			}
 		);
 
