@@ -36,7 +36,8 @@ var configService = function() {
 			},
 			data: {
 				main: 'http://local.dev/',
-				posts: 'wordpress/wp-json/posts'
+				posts: 'wordpress/wp-json/posts',
+				targetForm: 'php/form.php'
 			}
 		};
 

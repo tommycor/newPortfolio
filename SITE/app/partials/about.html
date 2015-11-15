@@ -16,21 +16,21 @@
 		</article>
 		<article class="about__container__article about__container__article--right">
 			<h5 class="about__container__article__h5 h5">Contacter</h5>
-			<form class="about__form">
+			<form class="about__form" name="messageForm" novalidate >
 				<div class="about__form__line">
 					<label for="name" class="about__form__line__label">Nom</label>
-					<input type="text" name="name" id="name" class="about__form__line__input">
+					<input type="text" name="name" ng-model="message.name" id="name" ng-minlength="2" class="about__form__line__input" required >
 				</div>
 				<div class="about__form__line">
-					<label for="mail" class="about__form__line__label">Mail</label>
-					<input type="email" name="mail" id="mail" class="about__form__line__input">
+					<label for="mail" class="about__form__line__label" >Mail</label>
+					<input type="email" name="mail" ng-model="message.mail" id="mail" class="about__form__line__input" required >
 				</div>
 				<div class="about__form__line">
 					<label for="message" class="about__form__line__label">Message</label>
-					<textarea id="message" class="about__form__line__textarea"></textarea>
+					<textarea id="message" name="text" ng-model="message.message" class="about__form__line__textarea" ng-minlength="10" required ></textarea>
 				</div>
 				<div class="about__form__line">
-					<input type="submit" value="Envoyer" class="about__form__line__input about__form__line__submit">
+					<button ng-click="send()" class="about__form__line__input about__form__line__submit">Envoyer</button>
 				</div>
 			</form>
 		</article>

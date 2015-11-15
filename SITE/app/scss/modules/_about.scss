@@ -81,5 +81,12 @@
 				border-color: #000;
 			}
 		}
+
+		&.ng-submitted {
+
+			& .ng-invalid {
+				border-color: #f00;
+			}
+		}
 	}
 }

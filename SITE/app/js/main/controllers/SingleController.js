@@ -2,7 +2,7 @@
 
 /* singleController */
 
-var singleController = function($scope, $location, $routeParams, $window, $interval, ImageLoaderService, configService) {
+var singleController = function($scope, $location, $routeParams, $window, $interval, ImageLoaderService) {
 
 	this.init = function() {
 
@@ -11,7 +11,6 @@ var singleController = function($scope, $location, $routeParams, $window, $inter
 		for( var i = 0 ; i < $scope.currentPost.meta.gallery.length ; i++) {
 			this.data[i] = $scope.currentPost.meta.gallery[i].url;
 		}
-		console.log($scope.currentPost);
 
 
 
