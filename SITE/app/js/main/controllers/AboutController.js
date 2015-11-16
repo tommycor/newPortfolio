@@ -13,6 +13,8 @@ var aboutController = function($scope, $http) {
 			mail: '',
 			message: ''
 		};
+
+		$scope.confirm = null;
 	};
 
 	$scope.send = function() {
@@ -28,13 +30,14 @@ var aboutController = function($scope, $http) {
 		};
 
 		var request = $http.post($scope.target, null, config);
+		$scope.sent = 'true';
 
 		request.success(
 			function(data) {
 				if(data === 'done')
-					$scope.send = 'true';
+					$scope.confirm = 'Message envoyé!';
 				else
-					console.log('Seems like serve is not liking something.');
+					$scope.confirm = 'Seems like serve is not liking something.';
 			}
 		);
 		request.error(

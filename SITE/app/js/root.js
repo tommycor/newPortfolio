@@ -62,8 +62,6 @@ var rootController = function($scope, $location, $interval, $window, $http, Scro
 		$scope.getPosition();
 
 		event.preventDefault();
-
-		console.log(event);
 		
 		var delta = event.deltaY;
 

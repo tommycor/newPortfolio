@@ -16,7 +16,7 @@
 		</article>
 		<article class="about__container__article about__container__article--right">
 			<h5 class="about__container__article__h5 h5">Contacter</h5>
-			<form class="about__form" name="messageForm" novalidate >
+			<form class="about__form" name="messageForm" novalidate ng-hide="sent">
 				<div class="about__form__line">
 					<label for="name" class="about__form__line__label">Nom</label>
 					<input type="text" name="name" ng-model="message.name" id="name" ng-minlength="2" class="about__form__line__input" required >
@@ -33,6 +33,7 @@
 					<button ng-click="send()" class="about__form__line__input about__form__line__submit">Envoyer</button>
 				</div>
 			</form>
+			<p class="about__confirm section"  ng-show="confirm !== null">{{confirm}}</p>
 		</article>
 	</div>
 </section>

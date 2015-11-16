@@ -37,6 +37,8 @@
 	}
 
 	&__form {
+		opacity: 1;
+		transition: opacity 0.5s;
 		
 		&__line {
 			width: 100%;
@@ -88,5 +90,18 @@
 				border-color: #f00;
 			}
 		}
+		&.ng-hide {
+			opacity: 0;
+		}
+	}
+	&__confirm {
+		opacity: 1;
+		transition: opacity 0.5s;
+		
+		
+		&.ng-hide {
+			opacity: 0;
+		}
+
 	}
 }
