@@ -2,7 +2,7 @@
 // It'll run immediately the first time you call it, because that's a very
 // long time since it was last called, as it were.
 // e.g. set up a scroll handler which will be called once every 500ms at most
-//  $(window).bind('scroll', throttle(my_expensive_scroll_handler, 500));
+// $(window).bind('scroll', throttle(my_expensive_scroll_handler, 500));
 var throttle = function(callback, delay) {
     var timeout
         ,last_run = 0;

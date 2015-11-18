@@ -6,7 +6,7 @@
 var scrollAnimation = function( $window, ScrollManagerService ) {
 	var animation = {};
 
-	var transition = 1.5;
+	var transition = 2;
 	var delay = transition / 3;
 
 	animation.enter = function (elem, done) {

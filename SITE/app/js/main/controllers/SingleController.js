@@ -136,7 +136,126 @@ var singleController = function($scope, $location, $routeParams, $window, $inter
 
 	$window.addEventListener('resize', this.resize);
 
+
+
+
+
+	var Noise = function (variation, color, step, maxColor) {
+		this.variation = variation;
+		this.color = color;
+		this.step = step;
+		this.maxColor = maxColor;
+
+		this.handleResize = this.handleResize.bind(this);
+		this.mouseMouve = this.mouseMouve.bind(this);
+
+
+		this.canvas = document.querySelector('#noiseCanvas');
+		this.container = document.querySelector('#containerCanvas');
+		this.context = this.canvas.getContext('2d');
+
+		this.canvasWidth = this.container.offsetWidth;
+		this.canvasHeight = this.container.offsetHeight;
+		this.canvas.setAttribute('width', this.canvasWidth + 'px');
+		this.canvas.setAttribute('height', this.canvasHeight + 'px');
+		this.canvas.top = this.canvas.getBoundingClientRect().top;
+
+		this.maxDist = 300000;
+		this.originalCanvasData = [];
+
+		this.canvasData = this.context.getImageData(0, 0, this.canvasWidth, this.canvasHeight);
+
+
+		this.init();
+	};
+
+	Noise.prototype.init = function() {
+
+		var current;
+		var variable;
+		
+		for( var y = 0 ; y < this.canvasHeight ; y += 1 ) {
+			for( var x = 0 ; x < this.canvasWidth ; x += 1 ) {
+
+				variable = this.color + ( ( Math.random() * this.variation ) - (this.variation / 2 ) ) ;
+
+				current =  ( y * this.canvasWidth + x ) * 4  ;
+
+				this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = variable;
+
+				this.canvasData.data[current + 3] = 255;
+
+				this.originalCanvasData[current] = variable;
+			}
+		}
+
+		this.update();
+
+	};
+
+	Noise.prototype.update = function() {
+		this.context.putImageData(this.canvasData, 0, 0);
+	};
+
+	Noise.prototype.mouseMouve = function(event) {
+
+		var current;
+		var dist;
+
+		
+		for(var y = 0 ; y < this.canvasHeight ; y += this.step ) {
+			for(var x = 0 ; x < this.canvasWidth ; x += this.step ) {
+
+				dist = distEvent(event, x, y, this.canvas.top);
+
+				current =  ( y * this.canvasWidth + x ) * 4  ;
+
+				if( dist < this.maxDist ){
+
+					this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = this.maxColor - ( ( this.maxColor - this.originalCanvasData[current] ) / this.maxDist ) * dist;
+
+				}
+				else{
+
+					this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = this.originalCanvasData[current];
+
+				}
+			}
+		}
+
+		this.update();
+
+	};
+
+	Noise.prototype.handleResize = function() {
+
+		this.canvasWidth = this.container.offsetWidth;
+		this.canvasHeight = this.container.offsetHeight;
+		this.canvas.setAttribute('width', this.canvasWidth + 'px');
+		this.canvas.setAttribute('height', this.canvasHeight + 'px');
+		this.canvas.top = this.canvas.getBoundingClientRect().top;
+
+		this.canvasData = this.context.getImageData(0, 0, this.canvasWidth, this.canvasHeight);
+
+		this.init();
+	};
+
+	function distEvent( event, x, y, top ) {
+		event = {
+			x: event.clientX,
+			y: event.clientY - top
+		};
+
+		return( ( event.x - x ) * ( event.x - x ) + ( event.y - y ) * ( event.y - y ) );
+	}
+
 	this.init();
+
+	var noise = new Noise(30, 220, 1, 230);
+
+	$window.addEventListener('resize', noise.handleResize, false);
+
+	$window.addEventListener('mousemove', noise.mouseMouve, false);
 };
 
 module.exports = singleController;

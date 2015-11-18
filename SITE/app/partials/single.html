@@ -67,6 +67,9 @@
 		</div>
 	</div>
 	<article class="single__article">
+		<div class="single__article__container" id="containerCanvas">
+			<canvas class="single__article__container__canvas" id="noiseCanvas"></canvas>
+		</div>
 		<div class="single__article__titles clearfix">
 			<h4 class="single__article__titles__h3 h3">{{currentPost.title}}</h4>
 			<div class="single__article__titles__technos"><span ng-repeat="tag in currentPost.terms.post_tag">{{tag.name}}{{$last ? '' : ' - '}}</div>
