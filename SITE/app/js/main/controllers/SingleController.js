@@ -212,7 +212,13 @@ var singleController = function($scope, $location, $routeParams, $window, $inter
 
 				if( dist < this.maxDist ){
 
-					this.canvasData.data[current + 0] = this.canvasData.data[current + 1] = this.canvasData.data[current + 2] = this.maxColor - ( ( this.maxColor - this.originalCanvasData[current] ) / this.maxDist ) * dist;
+					for( var i = 0 ; i < this.step ; i ++)
+					{
+
+						this.canvasData.data[current + ( i * 4 ) + 0] = this.canvasData.data[current + ( i * 4 ) + 1] = this.canvasData.data[current + ( i * 4 ) + 2] = this.maxColor - ( ( this.maxColor - this.originalCanvasData[current] ) / this.maxDist ) * dist;
+						
+					}
+
 
 				}
 				else{
@@ -251,7 +257,7 @@ var singleController = function($scope, $location, $routeParams, $window, $inter
 
 	this.init();
 
-	var noise = new Noise(30, 220, 1, 230);
+	var noise = new Noise(30, 220, 2, 260);
 
 	$window.addEventListener('resize', noise.handleResize, false);
 

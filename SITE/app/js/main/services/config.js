@@ -35,7 +35,7 @@ var configService = function() {
 				sliderDelay: 5000
 			},
 			data: {
-				main: 'http://local.dev/',
+				main: 'http://tommycornilleau.fr/',
 				posts: 'wordpress/wp-json/posts',
 				targetForm: 'php/form.php'
 			}
