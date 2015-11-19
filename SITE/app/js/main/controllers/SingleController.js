@@ -261,7 +261,11 @@ var singleController = function($scope, $location, $routeParams, $window, $inter
 
 	$window.addEventListener('resize', noise.handleResize, false);
 
-	$window.addEventListener('mousemove', noise.mouseMouve, false);
+	var isFirefox = typeof InstallTrigger !== 'undefined';
+	var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+	if(!isFirefox && !isIE)
+		$window.addEventListener('mousemove', noise.mouseMouve, false);
 };
 
 module.exports = singleController;
