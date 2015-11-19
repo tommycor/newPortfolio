@@ -25,4 +25,14 @@
 			transform: translate(-50%, 10px);
 		}
 	}
+	&__chrome {
+		@extend %horizontal-vertical-center;
+
+		font-family: $font_family_p;
+		font-size: $font_size_p;
+		font-weight: $font_weight_p;
+		font-style: $font_style_p;
+		color: $gold;
+		transform: translateX(-50%) translateY(80px);
+	}
 }

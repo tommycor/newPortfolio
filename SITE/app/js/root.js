@@ -13,6 +13,7 @@ var rootController = function($scope, $location, $interval, $window, $http, Scro
 
 
 		// General Listeners
+		// $window.addEventListener('wheel', $scope.mousewheel)
 		$window.addEventListener('wheel', throttle($scope.mousewheel, $scope.config.UI.wheelThrottle, {
 			trailing: false
 		}));
@@ -65,13 +66,15 @@ var rootController = function($scope, $location, $interval, $window, $http, Scro
 		
 		var delta = event.deltaY;
 
-		if ( delta > 0 ) {
+		console.log(delta);
+
+		if ( delta > 0  && delta <= 100) {
 			if ( typeof $scope.page.next !== 'undefined' ) {	
 				ScrollManagerService.setDirection('up');
 				$scope.goto($scope.page.next.path);
 			}
 		}
-		else {
+		else if ( delta < 0  && delta >= -100 ){
 			if ( typeof $scope.page.previous !== 'undefined' ) {
 				ScrollManagerService.setDirection('down');
 				$scope.goto($scope.page.previous.path);
